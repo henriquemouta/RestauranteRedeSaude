@@ -1,20 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Models.ViewModels
 {
-    public class PratoVM
+    [Table("Prato")]
+    public record PratoVM
     {
-        public int ID { get; set; }
 
-        public string Nome { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("ID")]
+        public int ID { get; init; }
 
-        public decimal Preco { get; set; }
+        [Column("Nome")]
+        public string Nome { get; init; }
 
-        public string Categoria { get; set; }
+        [Column("Preco")]
+        public decimal Preco { get; init; }
+
+        [Column("Categoria")]
+        public string Categoria { get; init; }
 
     }
 }
