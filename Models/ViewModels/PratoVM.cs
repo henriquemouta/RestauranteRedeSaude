@@ -8,22 +8,19 @@ using System.Threading.Tasks;
 
 namespace Models.ViewModels
 {
-    [Table("Prato")]
-    public record PratoVM
+ 
+    public class PratoVM
     {
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("ID")]
-        public int ID { get; init; }
+         public int ID { get; init; }
 
-        [Column("Nome")]
+     
         public string Nome { get; init; }
 
-        [Column("Preco")]
+
         public decimal Preco { get; init; }
 
-        [Column("Categoria")]
+ 
         public string Categoria { get; init; }
 
     }
