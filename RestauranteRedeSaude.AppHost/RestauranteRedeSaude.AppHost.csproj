@@ -12,6 +12,9 @@
   <ItemGroup>
     <ProjectReference Include="..\RestauranteRedeSaude.ApiService\RestauranteRedeSaude.ApiService.csproj" />
     <ProjectReference Include="..\RestauranteRedeSaude.Web\RestauranteRedeSaude.Web.csproj" />
+    <ProjectReference Include="..\RestauranteRedeSaudeEstoque\RestauranteRedeSaudeEstoque.csproj" />
+    <ProjectReference Include="..\RestauranteRedeSaudeFornecedores\RestauranteRedeSaudeFornecedores.csproj" />
+    <ProjectReference Include="..\RestauranteRedeSaudeFuncionarios\RestauranteRedeSaudeFuncionarios.csproj" />
   </ItemGroup>
 
   <ItemGroup>

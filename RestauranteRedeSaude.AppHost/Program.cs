@@ -6,4 +6,10 @@ builder.AddProject<Projects.RestauranteRedeSaude_Web>("webfrontend")
     .WithExternalHttpEndpoints()
     .WithReference(apiService);
 
+builder.AddProject<Projects.RestauranteRedeSaudeFornecedores>("restauranteredesaudefornecedores");
+
+builder.AddProject<Projects.RestauranteRedeSaudeEstoque>("restauranteredesaudeestoque");
+
+builder.AddProject<Projects.RestauranteRedeSaudeFuncionarios>("restauranteredesaudefuncionarios");
+
 builder.Build().Run();
