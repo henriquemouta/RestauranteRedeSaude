@@ -8,8 +8,7 @@ namespace Models.ViewModels
 {
     public class FornecedorVM
     {
-        public int ID { get; set; }  
-
+        public int Id { get; set; }
         public string Nome { get; set; }  
 
         public string CNPJ { get; set; }  

@@ -16,7 +16,8 @@ namespace Data.Data
         }
 
         public DbSet<PratoVM> Pratos { get; set; }
-
+        
+        public DbSet<FornecedorVM> Fornecedors { get; set; }
     }
 
 }
