@@ -19,36 +19,36 @@ namespace Business.Repositorios
         Task UpdateFuncionario(FuncionarioVM funcionarioVM);
         Task DeleteFuncionario(int id);
     }
-    public class RepositorioFuncionario(AppDbContext context) : IRepositorioFuncionario
+    public class RepositorioFuncionario(AppDbContext dbContext) : IRepositorioFuncionario
     {
         public async Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario)
         {
-            context.Funcionario.Add(funcionario);
-            await context.SaveChangesAsync();
+            dbContext.Funcionario.Add(funcionario);
+            await dbContext.SaveChangesAsync();
             return funcionario;
         }
 
         public async Task DeleteFuncionario(int id)
         {
-            var funcionario = context.Funcionario.FirstOrDefault(n => n.id  == id);
-            context.Remove(funcionario);
-            await context.SaveChangesAsync();
+            var funcionario = dbContext.Funcionario.FirstOrDefault(n => n.id  == id);
+            dbContext.Remove(funcionario);
+            await dbContext.SaveChangesAsync();
         }   
 
         public async Task<List<FuncionarioVM>> GetFuncionarios()
         {
-            return await context.Funcionario.ToListAsync();
+            return await dbContext.Funcionario.ToListAsync();
         }
 
         public async Task<FuncionarioVM> GetFuncionarioId(int id)
         {
-            return context.Funcionario.FirstOrDefault(n => n.id == id);
+            return dbContext.Funcionario.FirstOrDefault(n => n.id == id);
         }
 
-        public async Task UpdateFuncionario(FuncionarioVM funcionarioVM)
+        public async Task UpdateFuncionario(FuncionarioVM funcionario)
         {
-            context.Entry(funcionarioVM).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            dbContext.Entry(funcionario).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
         }
     
     }
