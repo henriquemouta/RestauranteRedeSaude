@@ -22,8 +22,4 @@
     <ProjectReference Include="..\RestauranteRedeSaude.ServiceDefaults\RestauranteRedeSaude.ServiceDefaults.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
