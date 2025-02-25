@@ -1,3 +1,5 @@
+using Business.Repositorios;
+using Business.Services;
 using Data.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
+builder.Services.AddScoped<IServicoPrato, ServicoPrato>();
+builder.Services.AddScoped<IRepositorioPrato, RepositorioPrato>();
 
 builder.Services.AddProblemDetails();
 

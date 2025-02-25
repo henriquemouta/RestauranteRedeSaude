@@ -8,10 +8,10 @@ namespace Models.Models
 {
     public class ModelodeResposta
     {
-        public bool Sucesso { get; set; }
-        public string Erro { get; set; }
+        public bool sucesso { get; set; }
+        public string erro { get; set; }
 
-        public Object Info { get; set; }
+        public Object info { get; set; }
 
 
     }

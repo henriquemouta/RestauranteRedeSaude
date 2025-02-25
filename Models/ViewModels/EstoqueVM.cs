@@ -10,13 +10,13 @@ namespace Models.ViewModels
     {
         public int ID { get; set; }  
 
-        public string Nome { get; set; }  
+        public string nome { get; set; }  
 
-        public int Quantidade { get; set; }  
+        public int quantidade { get; set; }  
 
-        public decimal PrecoUnitario { get; set; }  
+        public decimal precoUnitario { get; set; }  
 
-        public string Categoria { get; set; }  
+        public string categoria { get; set; }  
 
     }
 }
