@@ -14,33 +14,41 @@ namespace Business.Repositorios
     public interface IRepositorioFuncionario
     {
         Task<List<FuncionarioVM>> GetFuncionarios();
-        Task<FuncionarioVM> GetFuncionarioVM(int id);
-      
+        Task<FuncionarioVM> GetFuncionarioId(int id);
+        Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario);
         Task UpdateFuncionario(FuncionarioVM funcionarioVM);
         Task DeleteFuncionario(int id);
     }
     public class RepositorioFuncionario(AppDbContext context) : IRepositorioFuncionario
     {
-
-
-        Task IRepositorioFuncionario.DeleteFuncionario(int id)
+        public async Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario)
         {
-            throw new NotImplementedException();
+            context.Funcionario.Add(funcionario);
+            await context.SaveChangesAsync();
+            return funcionario;
         }
 
-        Task<List<FuncionarioVM>> IRepositorioFuncionario.GetFuncionarios()
+        public async Task DeleteFuncionario(int id)
         {
-            return context.Funcionario.ToListAsync();
+            var funcionario = context.Funcionario.FirstOrDefault(n => n.id  == id);
+            context.Remove(funcionario);
+            await context.SaveChangesAsync();
+        }   
+
+        public async Task<List<FuncionarioVM>> GetFuncionarios()
+        {
+            return await context.Funcionario.ToListAsync();
         }
 
-        Task<FuncionarioVM> IRepositorioFuncionario.GetFuncionarioVM(int id)
+        public async Task<FuncionarioVM> GetFuncionarioId(int id)
         {
-            throw new NotImplementedException();
+            return context.Funcionario.FirstOrDefault(n => n.id == id);
         }
 
-        Task IRepositorioFuncionario.UpdateFuncionario(FuncionarioVM funcionarioVM)
+        public async Task UpdateFuncionario(FuncionarioVM funcionarioVM)
         {
-            throw new NotImplementedException();
+            context.Entry(funcionarioVM).State = EntityState.Modified;
+            await context.SaveChangesAsync();
         }
     }
 }

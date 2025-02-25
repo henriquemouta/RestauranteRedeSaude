@@ -20,6 +20,8 @@ namespace Data.Data
         public DbSet<FuncionarioVM> Funcionario { get; set; }
 
 
+
+
         public DbSet<EstoqueVM> Estoque { get; set; }
 
    
