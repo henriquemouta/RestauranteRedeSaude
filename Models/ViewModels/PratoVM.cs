@@ -12,16 +12,16 @@ namespace Models.ViewModels
     public class PratoVM
     {
 
-         public int ID { get; init; }
+         public int id { get; init; }
 
      
-        public string Nome { get; init; }
+        public string nome { get; init; }
 
 
-        public decimal Preco { get; init; }
+        public decimal preco { get; init; }
 
  
-        public string Categoria { get; init; }
+        public string categoria { get; init; }
 
     }
 }
