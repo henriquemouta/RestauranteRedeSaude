@@ -15,13 +15,18 @@ namespace Business.Repositorios
     {
         Task<List<FuncionarioVM>> GetFuncionarios();
         Task<FuncionarioVM> GetFuncionarioVM(int id);
-      
+        Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario);
         Task UpdateFuncionario(FuncionarioVM funcionarioVM);
         Task DeleteFuncionario(int id);
     }
     public class RepositorioFuncionario(AppDbContext context) : IRepositorioFuncionario
     {
-
+        async Task<FuncionarioVM> IRepositorioFuncionario.AddFuncionario(FuncionarioVM funcionario)
+        {
+            context.Funcionario.Add(funcionario);
+            await context.SaveChangesAsync();
+            return funcionario;
+        }
 
         Task IRepositorioFuncionario.DeleteFuncionario(int id)
         {

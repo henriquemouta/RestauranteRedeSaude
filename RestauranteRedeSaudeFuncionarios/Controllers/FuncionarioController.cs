@@ -16,5 +16,12 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
             var funcionarios = await servicoFuncionario.GetFuncionarios();
             return Ok(new ModelodeResposta { sucesso = true , info = funcionarios });
         }
+
+        [HttpPost]
+        public async Task<ActionResult<FuncionarioVM>> AddFuncionario(FuncionarioVM funcionario)
+        {
+            await servicoFuncionario.AddFuncionario(funcionario);
+            return Ok(new ModelodeResposta { sucesso = true});
+        }
     }
 }
