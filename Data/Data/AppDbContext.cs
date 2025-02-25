@@ -15,16 +15,7 @@ namespace Data.Data
             Database.EnsureCreated();
         }
 
-        public DbSet<PratoVM> Prato { get; set; }
-
-        public DbSet<FuncionarioVM> Funcionario { get; set; }
-
-
-
-
-        public DbSet<EstoqueVM> Estoque { get; set; }
-
-   
+        public DbSet<PratoVM> Pratos { get; set; }
 
     }
 

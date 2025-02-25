@@ -1,3 +1,5 @@
+using Business.Repositorios;
+using Business.Services;
 using Data.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +18,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddScoped<IServicoFornecedor, ServicoFornecedor>();
+builder.Services.AddScoped<IRepositorioFornecedor,RepositorioFornecedor>();
 
 var app = builder.Build();
 
