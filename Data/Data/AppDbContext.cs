@@ -17,10 +17,13 @@ namespace Data.Data
 
         public DbSet<PratoVM> Pratos { get; set; }
 
+        public DbSet<FuncionarioVM> Funcionario { get; set; }
+
+
         public DbSet<EstoqueVM> Estoque { get; set; }
 
    
-        
+
     }
 
 }
