@@ -52,5 +52,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
             await servicoFuncionario.UpdateFuncionar(funcionario);
             return Ok(new ModelodeResposta { sucesso = true });
         }
+
+
     }
 }

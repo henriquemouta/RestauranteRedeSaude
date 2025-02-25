@@ -2,11 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestauranteRedeSaude.AppHost", "RestauranteRedeSaude.AppHost\RestauranteRedeSaude.AppHost.csproj", "{081720BB-014C-4D4F-AEDD-7F34741D0620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestauranteRedeSaude.AppHost", "RestauranteRedeSaude.AppHost\RestauranteRedeSaude.AppHost.csproj", "{081720BB-014C-4D4F-AEDD-7F34741D0620}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestauranteRedeSaude.ServiceDefaults", "RestauranteRedeSaude.ServiceDefaults\RestauranteRedeSaude.ServiceDefaults.csproj", "{FA855AC6-A43C-4F00-B85B-992A750B7E3F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestauranteRedeSaude.ApiService", "RestauranteRedeSaude.ApiService\RestauranteRedeSaude.ApiService.csproj", "{789238C0-E25B-472C-AD94-764D85C4599A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestauranteRedeSaude.Web", "RestauranteRedeSaude.Web\RestauranteRedeSaude.Web.csproj", "{09525A69-EC49-4132-B9D7-037FA2B598EF}"
 EndProject
@@ -20,11 +18,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestauranteRedeSaudeFuncion
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Uteis", "Uteis", "{015DEB31-6993-4F3F-8ADB-1D4888834300}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{3224FECF-89AA-47EB-8DA7-9F645270A016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{3224FECF-89AA-47EB-8DA7-9F645270A016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{57A29139-CA79-4C6C-AA93-BADB21E25D2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{57A29139-CA79-4C6C-AA93-BADB21E25D2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{6E21154C-D6AD-43F7-9C13-10F146C16805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{6E21154C-D6AD-43F7-9C13-10F146C16805}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestauranteRedeSaudePrato", "RestauranteRedeSaudePrato\RestauranteRedeSaudePrato.csproj", "{163184F5-F7B7-4C65-BCB0-A3282039EB18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +40,6 @@ Global
 		{FA855AC6-A43C-4F00-B85B-992A750B7E3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA855AC6-A43C-4F00-B85B-992A750B7E3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA855AC6-A43C-4F00-B85B-992A750B7E3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{789238C0-E25B-472C-AD94-764D85C4599A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{789238C0-E25B-472C-AD94-764D85C4599A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{789238C0-E25B-472C-AD94-764D85C4599A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{789238C0-E25B-472C-AD94-764D85C4599A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09525A69-EC49-4132-B9D7-037FA2B598EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09525A69-EC49-4132-B9D7-037FA2B598EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09525A69-EC49-4132-B9D7-037FA2B598EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,18 +68,22 @@ Global
 		{6E21154C-D6AD-43F7-9C13-10F146C16805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E21154C-D6AD-43F7-9C13-10F146C16805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E21154C-D6AD-43F7-9C13-10F146C16805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{163184F5-F7B7-4C65-BCB0-A3282039EB18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163184F5-F7B7-4C65-BCB0-A3282039EB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163184F5-F7B7-4C65-BCB0-A3282039EB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163184F5-F7B7-4C65-BCB0-A3282039EB18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{789238C0-E25B-472C-AD94-764D85C4599A} = {0C01A0CD-59DF-4818-8341-F15BB9F8A375}
 		{5A71550C-4AF1-48A4-B049-71BE06635F07} = {0C01A0CD-59DF-4818-8341-F15BB9F8A375}
 		{96403642-0E17-434D-83AC-C0CAAA7ADA4D} = {0C01A0CD-59DF-4818-8341-F15BB9F8A375}
 		{BA94B3C1-5FAC-478A-A0B4-18D4115C073A} = {0C01A0CD-59DF-4818-8341-F15BB9F8A375}
 		{3224FECF-89AA-47EB-8DA7-9F645270A016} = {015DEB31-6993-4F3F-8ADB-1D4888834300}
 		{57A29139-CA79-4C6C-AA93-BADB21E25D2A} = {015DEB31-6993-4F3F-8ADB-1D4888834300}
 		{6E21154C-D6AD-43F7-9C13-10F146C16805} = {015DEB31-6993-4F3F-8ADB-1D4888834300}
+		{163184F5-F7B7-4C65-BCB0-A3282039EB18} = {0C01A0CD-59DF-4818-8341-F15BB9F8A375}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {517FC46C-0622-40B6-AF30-A704B11EB2C7}

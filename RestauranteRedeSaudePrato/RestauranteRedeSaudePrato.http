@@ -1,0 +1,6 @@
+@RestauranteRedeSaudePrato_HostAddress = http://localhost:5189
+
+GET {{RestauranteRedeSaudePrato_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

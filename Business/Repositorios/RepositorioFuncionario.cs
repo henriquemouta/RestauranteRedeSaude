@@ -50,5 +50,6 @@ namespace Business.Repositorios
             context.Entry(funcionarioVM).State = EntityState.Modified;
             await context.SaveChangesAsync();
         }
+    
     }
 }

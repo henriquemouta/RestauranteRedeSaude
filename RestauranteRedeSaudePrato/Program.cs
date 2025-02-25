@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.AddServiceDefaults();
 
+// Add services to the container.
 
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -22,23 +22,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IServicoPrato, ServicoPrato>();
 builder.Services.AddScoped<IRepositorioPrato, RepositorioPrato>();
 
-builder.Services.AddProblemDetails();
-
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
 
-app.UseExceptionHandler();
-
-app.MapControllers();
-
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
 
-app.MapDefaultEndpoints();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
-

@@ -12,10 +12,20 @@ namespace Business.Repositorios
     public interface IRepositorioEstoque
     {
         Task<List<EstoqueVM>> GetEstoque();
+
+        Task<EstoqueVM> CreateEstoqueItem(EstoqueVM item);
     }
 
     public class RepositorioEstoque(AppDbContext dbContext) : IRepositorioEstoque
     {
+        public async Task<EstoqueVM> CreateEstoqueItem(EstoqueVM item)
+        {
+           dbContext.Estoque.Add(item);
+           await dbContext.SaveChangesAsync();
+           return item;
+           
+        }
+
         public async Task<List<EstoqueVM>> GetEstoque()
         {
             return await dbContext.Estoque.ToListAsync();
