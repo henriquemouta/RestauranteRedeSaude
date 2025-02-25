@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Repositorios;
+using Microsoft.EntityFrameworkCore.Query;
 using Models.ViewModels;
 
 namespace Business.Services
@@ -11,7 +12,7 @@ namespace Business.Services
     public interface IServicoFuncionario
     {
         Task<List<FuncionarioVM>> GetFuncionarios();
-        Task<FuncionarioVM> GetFuncionarioVM();
+        Task<FuncionarioVM> GetFuncionarioId(int id);
         Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario);
         Task UpdateFuncionar(FuncionarioVM funcionario);
         Task DeleteFuncionario(int id);
@@ -19,28 +20,28 @@ namespace Business.Services
 
     public class ServicoFuncionario(IRepositorioFuncionario repositorioFuncionario) : IServicoFuncionario
     {
-        Task<FuncionarioVM> IServicoFuncionario.AddFuncionario(FuncionarioVM funcionario)
+        public async Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario)
         {
-            return repositorioFuncionario.AddFuncionario(funcionario);
+            return await repositorioFuncionario.AddFuncionario(funcionario);
         }
 
-        Task IServicoFuncionario.DeleteFuncionario(int id)
+        public async Task DeleteFuncionario(int id)
         {
-            throw new NotImplementedException();
+             await repositorioFuncionario.DeleteFuncionario(id);
         }
 
-        Task<List<FuncionarioVM>> IServicoFuncionario.GetFuncionarios()
+        public async Task<List<FuncionarioVM>> GetFuncionarios()
         {
-            return repositorioFuncionario.GetFuncionarios();        }
+            return await repositorioFuncionario.GetFuncionarios();        }
 
-        Task<FuncionarioVM> IServicoFuncionario.GetFuncionarioVM()
+        public async Task<FuncionarioVM> GetFuncionarioId(int id)
         {
-            throw new NotImplementedException();
+            return await repositorioFuncionario.GetFuncionarioId(id);
         }
 
-        Task IServicoFuncionario.UpdateFuncionar(FuncionarioVM funcionario)
+        public async Task UpdateFuncionar(FuncionarioVM funcionario)
         {
-            throw new NotImplementedException();
+            await repositorioFuncionario.UpdateFuncionario(funcionario);
         }
     }
 }
