@@ -37,7 +37,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
             var funcionario = servicoFuncionario.GetFuncionarioId(id);
             if (funcionario == null)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "deu ruimpaizao" });
+                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
             }
             return Ok(new ModelodeResposta { sucesso = true, info = funcionario });
         }
@@ -47,7 +47,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         {
             if (id != funcionario.id)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "deu errado paizao" });
+                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
             }
             await servicoFuncionario.UpdateFuncionar(funcionario);
             return Ok(new ModelodeResposta { sucesso = true });
