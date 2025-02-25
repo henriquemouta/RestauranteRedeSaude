@@ -16,5 +16,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
             var funcionarios = await servicoFuncionario.GetFuncionarios();
             return Ok(new ModelodeResposta { Sucesso = true , Info = funcionarios });
         }
+
+
     }
 }

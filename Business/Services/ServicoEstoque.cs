@@ -11,10 +11,17 @@ namespace Business.Services
     public interface IServicoEstoque
     {
         Task<List<EstoqueVM>> GetEstoque();
+
+        Task<EstoqueVM> CreateEstoqueItem(EstoqueVM item);
     }
 
     public class ServicoEstoque(IRepositorioEstoque repositorioEstoque) : IServicoEstoque
     {
+        public async Task<EstoqueVM> CreateEstoqueItem(EstoqueVM item)
+        {
+            return await repositorioEstoque.CreateEstoqueItem(item);
+        }
+
         public async Task<List<EstoqueVM>> GetEstoque()
         {
             return await repositorioEstoque.GetEstoque();

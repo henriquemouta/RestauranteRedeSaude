@@ -20,5 +20,6 @@ namespace Business.Repositorios
         {
             return context.Funcionario.ToListAsync();
         }
+    
     }
 }
