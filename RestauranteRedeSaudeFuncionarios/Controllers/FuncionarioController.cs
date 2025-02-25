@@ -14,7 +14,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         public async Task<ActionResult<ModelodeResposta>> GetFuncionarios()
         {
             var funcionarios = await servicoFuncionario.GetFuncionarios();
-            return Ok(new ModelodeResposta { Sucesso = true , Info = funcionarios });
+            return Ok(new ModelodeResposta { sucesso = true , info = funcionarios });
         }
     }
 }
