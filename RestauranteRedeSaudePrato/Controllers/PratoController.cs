@@ -13,7 +13,7 @@ namespace RestauranteRedeSaudePrato.Controllers
             public async Task<ActionResult<ModelodeResposta>> GetPratos()
             {
                 var pratos = await servicoPrato.GetPratos();
-                return Ok(new ModelodeResposta { Sucesso = true, Info = pratos });
+                return Ok(new ModelodeResposta { sucesso = true, info = pratos });
             }
 
 
