@@ -32,7 +32,8 @@ namespace Business.Services
 
         public async Task<List<FuncionarioVM>> getFuncionarios()
         {
-            return await repositorioFuncionario.getFuncionarios();        }
+            return await repositorioFuncionario.getFuncionarios();        
+        }
 
         public async Task<FuncionarioVM> getFuncionarioId(int id)
         {
