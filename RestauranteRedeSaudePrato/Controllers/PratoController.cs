@@ -39,14 +39,14 @@ namespace RestauranteRedeSaudePrato.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<PratoVM>> addPrato(PratoVM prato)
+        public async Task<ActionResult<Prato>> addPrato(Prato prato)
         {
             await servicoPrato.addPrato(prato);
             return Ok(new ModelodeResposta { sucesso = true });
         }
 
         [HttpPut("id")]
-        public async Task<IActionResult> updatePrato(int id, PratoVM prato)
+        public async Task<IActionResult> updatePrato(int id, Prato prato)
         {
             if (id != prato.id)
             {

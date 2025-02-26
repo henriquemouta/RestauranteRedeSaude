@@ -10,22 +10,22 @@ namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<List<EstoqueVM>> getEstoque();
+        Task<List<Estoque>> getEstoque();
 
-        Task<EstoqueVM> addEstoque(EstoqueVM item);
+        Task<Estoque> addEstoque(Estoque item);
 
-        Task updateEstoque(EstoqueVM item);
+        Task updateEstoque(Estoque item);
 
         Task<bool> estoqueExiste(int id);
 
         Task deleteEstoque(int id);
 
-        Task<EstoqueVM> getEstoqueId(int id);
+        Task<Estoque> getEstoqueId(int id);
     }
 
     public class ServicoEstoque(IRepositorioEstoque repositorioEstoque) : IServicoEstoque
     {
-        public async Task<EstoqueVM> addEstoque(EstoqueVM item)
+        public async Task<Estoque> addEstoque(Estoque item)
         {
             return await repositorioEstoque.addEstoque(item);
         }
@@ -40,17 +40,17 @@ namespace Business.Services
             return await repositorioEstoque.estoqueExiste(id);
         }
 
-        public async Task<List<EstoqueVM>> getEstoque()
+        public async Task<List<Estoque>> getEstoque()
         {
             return await repositorioEstoque.getEstoque();
         }
 
-        public async Task<EstoqueVM> getEstoqueId(int id)
+        public async Task<Estoque> getEstoqueId(int id)
         {
             return await repositorioEstoque.getEstoqueId(id);
         }
 
-        public Task updateEstoque(EstoqueVM item)
+        public Task updateEstoque(Estoque item)
         {
             return repositorioEstoque.updateEstoque(item);
         }

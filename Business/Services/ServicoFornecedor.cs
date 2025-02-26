@@ -10,15 +10,15 @@ namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<List<FornecedorVM>> getFornecedores();
-        Task<FornecedorVM> getFornecedorId(int id);
-        Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor);
-        Task updateFornecedor(FornecedorVM fornecedor);
+        Task<List<Fornecedor>> getFornecedores();
+        Task<Fornecedor> getFornecedorId(int id);
+        Task<Fornecedor> addFornecedor(Fornecedor fornecedor);
+        Task updateFornecedor(Fornecedor fornecedor);
         Task deleteFornecedor(int id);
     }
     public class ServicoFornecedor(IRepositorioFornecedor repositorioFornecedor) : IServicoFornecedor
     {
-        public async Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor)
+        public async Task<Fornecedor> addFornecedor(Fornecedor fornecedor)
         {
             return await repositorioFornecedor.addFornecedor(fornecedor);
         }
@@ -28,17 +28,17 @@ namespace Business.Services
             await repositorioFornecedor.deleteFornecedor(id); 
         }
 
-        public async Task<List<FornecedorVM>> getFornecedores()
+        public async Task<List<Fornecedor>> getFornecedores()
         {
             return await repositorioFornecedor.getFornecedores();
         }
 
-        public async Task<FornecedorVM> getFornecedorId(int id)
+        public async Task<Fornecedor> getFornecedorId(int id)
         {
             return await repositorioFornecedor.getFornecedorId(id);
         }
 
-        public async Task updateFornecedor(FornecedorVM fornecedor)
+        public async Task updateFornecedor(Fornecedor fornecedor)
         {
             await repositorioFornecedor.updateFornecedor(fornecedor);
         }

@@ -18,7 +18,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<FuncionarioVM>> addFuncionario(FuncionarioVM funcionario)
+        public async Task<ActionResult<Funcionario>> addFuncionario(Funcionario funcionario)
         {
             await servicoFuncionario.addFuncionario(funcionario);
             return Ok(new ModelodeResposta { sucesso = true});
@@ -32,7 +32,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<ActionResult<FuncionarioVM>> getFuncionarioId(int id)
+        public async Task<ActionResult<Funcionario>> getFuncionarioId(int id)
         {
             var funcionario = servicoFuncionario.getFuncionarioId(id);
             if (funcionario == null)
@@ -43,7 +43,7 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         }
 
         [HttpPut("id")]
-        public async Task<IActionResult> updateFuncionario(int id, FuncionarioVM funcionario)
+        public async Task<IActionResult> updateFuncionario(int id, Funcionario funcionario)
         {
             if (id != funcionario.id)
             {

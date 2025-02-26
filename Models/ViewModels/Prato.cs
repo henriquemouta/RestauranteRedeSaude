@@ -9,19 +9,21 @@ using System.Threading.Tasks;
 namespace Models.ViewModels
 {
  
-    public class PratoVM
+    public class Prato
     {
 
-         public int id { get; init; }
+         public int id { get; set; }
 
      
-        public string nome { get; init; }
+        public string nome { get; set; }
 
 
-        public decimal preco { get; init; }
+        public decimal preco { get; set; }
 
  
-        public string categoria { get; init; }
+        public string categoria { get; set; }
+
+        public DateTime dataCriacao { get; set; }
 
     }
 }
