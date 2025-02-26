@@ -11,16 +11,16 @@ namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<List<FuncionarioVM>> getFuncionarios();
-        Task<FuncionarioVM> getFuncionarioId(int id);
-        Task<FuncionarioVM> addFuncionario(FuncionarioVM funcionario);
-        Task updateFuncionar(FuncionarioVM funcionario);
+        Task<List<Funcionario>> getFuncionarios();
+        Task<Funcionario> getFuncionarioId(int id);
+        Task<Funcionario> addFuncionario(Funcionario funcionario);
+        Task updateFuncionar(Funcionario funcionario);
         Task deleteFuncionario(int id);
     }
 
     public class ServicoFuncionario(IRepositorioFuncionario repositorioFuncionario) : IServicoFuncionario
     {
-        public async Task<FuncionarioVM> addFuncionario(FuncionarioVM funcionario)
+        public async Task<Funcionario> addFuncionario(Funcionario funcionario)
         {
             return await repositorioFuncionario.addFuncionario(funcionario);
         }
@@ -30,16 +30,16 @@ namespace Business.Services
              await repositorioFuncionario.deleteFuncionario(id);
         }
 
-        public async Task<List<FuncionarioVM>> getFuncionarios()
+        public async Task<List<Funcionario>> getFuncionarios()
         {
             return await repositorioFuncionario.getFuncionarios();        }
 
-        public async Task<FuncionarioVM> getFuncionarioId(int id)
+        public async Task<Funcionario> getFuncionarioId(int id)
         {
             return await repositorioFuncionario.getFuncionarioId(id);
         }
 
-        public async Task updateFuncionar(FuncionarioVM funcionario)
+        public async Task updateFuncionar(Funcionario funcionario)
         {
             await repositorioFuncionario.updateFuncionario(funcionario);
         }

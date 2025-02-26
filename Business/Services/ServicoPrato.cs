@@ -11,10 +11,10 @@ namespace Business.Services
 {
     public interface IServicoPrato 
     {
-        Task<List<PratoVM>> getPratos();
-        Task<PratoVM> getPratoId(int id);
-        Task<PratoVM> addPrato(PratoVM prato);
-        Task updatePrato(PratoVM prato);
+        Task<List<Prato>> getPratos();
+        Task<Prato> getPratoId(int id);
+        Task<Prato> addPrato(Prato prato);
+        Task updatePrato(Prato prato);
         Task deletePrato(int id);
 
     
@@ -22,12 +22,12 @@ namespace Business.Services
 
     public class ServicoPrato(IRepositorioPrato repositorioPrato) : IServicoPrato
     {
-        public async Task<List<PratoVM>> getPratos()
+        public async Task<List<Prato>> getPratos()
         {
             return await repositorioPrato.getPratos(); 
         }
 
-        public async Task<PratoVM> getPratoId(int id)
+        public async Task<Prato> getPratoId(int id)
         {
             return await repositorioPrato.getPratoId(id);
         }
@@ -37,12 +37,12 @@ namespace Business.Services
             await repositorioPrato.deletePrato(id);
         }
 
-        public async Task<PratoVM> addPrato(PratoVM prato)
+        public async Task<Prato> addPrato(Prato prato)
         {
             return await repositorioPrato.addPrato(prato);  
         }
 
-        public async Task updatePrato(PratoVM prato)
+        public async Task updatePrato(Prato prato)
         {
             await repositorioPrato.updatePrato(prato);
         }

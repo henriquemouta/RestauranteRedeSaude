@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models.ViewModels
 {
-    public class EstoqueVM
+    public class Estoque
     {
-        public int ID { get; set; }  
+        public int id { get; set; }  
 
         public string nome { get; set; }  
 
@@ -16,7 +16,7 @@ namespace Models.ViewModels
 
         public decimal precoUnitario { get; set; }  
 
-        public string categoria { get; set; }  
-
+        public string categoria { get; set; }
+        public DateTime dataCriacao { get; set; }
     }
 }
