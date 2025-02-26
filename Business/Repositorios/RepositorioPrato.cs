@@ -11,28 +11,28 @@ namespace Business.Repositorios
 {
     public interface IRepositorioPrato
     {
-       Task<List<PratoVM>> GetPratos();
-        Task<PratoVM> GetPratoId(int id);
-        Task<PratoVM> AddPrato(PratoVM prato);
-        Task UpdatePrato(PratoVM prato);
-        Task DeletePrato(int id);
+       Task<List<PratoVM>> getPratos();
+        Task<PratoVM> getPratoId(int id);
+        Task<PratoVM> addPrato(PratoVM prato);
+        Task updatePrato(PratoVM prato);
+        Task deletePrato(int id);
 
     }
 
     public class RepositorioPrato(AppDbContext dbContext) : IRepositorioPrato
     {
-        public async Task<List<PratoVM>> GetPratos()
+        public async Task<List<PratoVM>> getPratos()
         {
             return await dbContext.Prato.ToListAsync();
         }
 
-        public async Task<PratoVM> GetPratoId(int id)
+        public async Task<PratoVM> getPratoId(int id)
         {
             return await dbContext.Prato.FirstOrDefaultAsync(n => n.id == id);
              
         }
 
-        public async Task DeletePrato(int id)
+        public async Task deletePrato(int id)
         {
             var prato = await dbContext.Prato.FirstOrDefaultAsync(n => n.id == id);
             dbContext.Prato.Remove(prato);
@@ -40,13 +40,13 @@ namespace Business.Repositorios
         }
 
         
-        public async Task<PratoVM> AddPrato(PratoVM prato) { 
+        public async Task<PratoVM> addPrato(PratoVM prato) { 
             dbContext.Prato.Add(prato);
             await dbContext.SaveChangesAsync();
             return prato;
         }
 
-        public async Task UpdatePrato(PratoVM prato)
+        public async Task updatePrato(PratoVM prato)
         {
             dbContext.Entry(prato).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();

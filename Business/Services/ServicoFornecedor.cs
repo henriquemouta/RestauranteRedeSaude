@@ -10,37 +10,37 @@ namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<List<FornecedorVM>> GetFornecedores();
-        Task<FornecedorVM> GetFornecedorId(int id);
-        Task<FornecedorVM> AddFornecedor(FornecedorVM fornecedor);
-        Task UpdateFornecedor(FornecedorVM fornecedor);
-        Task DeleteFornecedor(int id);
+        Task<List<FornecedorVM>> getFornecedores();
+        Task<FornecedorVM> getFornecedorId(int id);
+        Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor);
+        Task updateFornecedor(FornecedorVM fornecedor);
+        Task deleteFornecedor(int id);
     }
     public class ServicoFornecedor(IRepositorioFornecedor repositorioFornecedor) : IServicoFornecedor
     {
-        public async Task<FornecedorVM> AddFornecedor(FornecedorVM fornecedor)
+        public async Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor)
         {
-            return await repositorioFornecedor.AddFornecedor(fornecedor);
+            return await repositorioFornecedor.addFornecedor(fornecedor);
         }
 
-        public async Task DeleteFornecedor(int id)
+        public async Task deleteFornecedor(int id)
         {
-            await repositorioFornecedor.DeleteFornecedor(id); 
+            await repositorioFornecedor.deleteFornecedor(id); 
         }
 
-        public async Task<List<FornecedorVM>> GetFornecedores()
+        public async Task<List<FornecedorVM>> getFornecedores()
         {
-            return await repositorioFornecedor.GetFornecedores();
+            return await repositorioFornecedor.getFornecedores();
         }
 
-        public async Task<FornecedorVM> GetFornecedorId(int id)
+        public async Task<FornecedorVM> getFornecedorId(int id)
         {
-            return await repositorioFornecedor.GetFornecedorId(id);
+            return await repositorioFornecedor.getFornecedorId(id);
         }
 
-        public async Task UpdateFornecedor(FornecedorVM fornecedor)
+        public async Task updateFornecedor(FornecedorVM fornecedor)
         {
-            await repositorioFornecedor.UpdateFornecedor(fornecedor);
+            await repositorioFornecedor.updateFornecedor(fornecedor);
         }
     }
 }

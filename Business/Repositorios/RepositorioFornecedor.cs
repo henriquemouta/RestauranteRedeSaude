@@ -14,39 +14,39 @@ namespace Business.Repositorios
 
     public interface IRepositorioFornecedor
     {
-        Task<List<FornecedorVM>> GetFornecedores();
-        Task<FornecedorVM> GetFornecedorId(int id);
-        Task<FornecedorVM> AddFornecedor(FornecedorVM fornecedor);
-        Task UpdateFornecedor(FornecedorVM fornecedorVM);
-        Task DeleteFornecedor(int id);
+        Task<List<FornecedorVM>> getFornecedores();
+        Task<FornecedorVM> getFornecedorId(int id);
+        Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor);
+        Task updateFornecedor(FornecedorVM fornecedorVM);
+        Task deleteFornecedor(int id);
     }
     public class RepositorioFornecedor(AppDbContext dbContext) : IRepositorioFornecedor
     {
-        public async Task<FornecedorVM> AddFornecedor(FornecedorVM fornecedor)
+        public async Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor)
         {
-            dbContext.Fornecedors.Add(fornecedor);
+            dbContext.Fornecedor.Add(fornecedor);
             await dbContext.SaveChangesAsync();
             return fornecedor;
         }
 
-        public async Task DeleteFornecedor(int id)
+        public async Task deleteFornecedor(int id)
         {
-            var fornecedor = dbContext.Fornecedors.FirstOrDefault(n => n.Id == id);
+            var fornecedor = dbContext.Fornecedor.FirstOrDefault(n => n.ID == id);
             dbContext.Remove(fornecedor);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<FornecedorVM>> GetFornecedores()
+        public async Task<List<FornecedorVM>> getFornecedores()
         {
-            return await dbContext.Fornecedors.ToListAsync();
+            return await dbContext.Fornecedor.ToListAsync();
         }
 
-        public async Task<FornecedorVM> GetFornecedorId(int id)
+        public async Task<FornecedorVM> getFornecedorId(int id)
         {
-            return dbContext.Fornecedors.FirstOrDefault(n => n.Id == id);
+            return dbContext.Fornecedor.FirstOrDefault(n => n.ID == id);
         }
 
-        public async Task UpdateFornecedor(FornecedorVM fornecedor)
+        public async Task updateFornecedor(FornecedorVM fornecedor)
         {
             dbContext.Entry(fornecedor).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();

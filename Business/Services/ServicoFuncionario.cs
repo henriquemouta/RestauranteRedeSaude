@@ -11,37 +11,37 @@ namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<List<FuncionarioVM>> GetFuncionarios();
-        Task<FuncionarioVM> GetFuncionarioId(int id);
-        Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario);
-        Task UpdateFuncionar(FuncionarioVM funcionario);
-        Task DeleteFuncionario(int id);
+        Task<List<FuncionarioVM>> getFuncionarios();
+        Task<FuncionarioVM> getFuncionarioId(int id);
+        Task<FuncionarioVM> addFuncionario(FuncionarioVM funcionario);
+        Task updateFuncionar(FuncionarioVM funcionario);
+        Task deleteFuncionario(int id);
     }
 
     public class ServicoFuncionario(IRepositorioFuncionario repositorioFuncionario) : IServicoFuncionario
     {
-        public async Task<FuncionarioVM> AddFuncionario(FuncionarioVM funcionario)
+        public async Task<FuncionarioVM> addFuncionario(FuncionarioVM funcionario)
         {
-            return await repositorioFuncionario.AddFuncionario(funcionario);
+            return await repositorioFuncionario.addFuncionario(funcionario);
         }
 
-        public async Task DeleteFuncionario(int id)
+        public async Task deleteFuncionario(int id)
         {
-             await repositorioFuncionario.DeleteFuncionario(id);
+             await repositorioFuncionario.deleteFuncionario(id);
         }
 
-        public async Task<List<FuncionarioVM>> GetFuncionarios()
+        public async Task<List<FuncionarioVM>> getFuncionarios()
         {
-            return await repositorioFuncionario.GetFuncionarios();        }
+            return await repositorioFuncionario.getFuncionarios();        }
 
-        public async Task<FuncionarioVM> GetFuncionarioId(int id)
+        public async Task<FuncionarioVM> getFuncionarioId(int id)
         {
-            return await repositorioFuncionario.GetFuncionarioId(id);
+            return await repositorioFuncionario.getFuncionarioId(id);
         }
 
-        public async Task UpdateFuncionar(FuncionarioVM funcionario)
+        public async Task updateFuncionar(FuncionarioVM funcionario)
         {
-            await repositorioFuncionario.UpdateFuncionario(funcionario);
+            await repositorioFuncionario.updateFuncionario(funcionario);
         }
     }
 }
