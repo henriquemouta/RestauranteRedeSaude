@@ -10,49 +10,49 @@ namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<List<EstoqueVM>> GetEstoque();
+        Task<List<EstoqueVM>> getEstoque();
 
-        Task<EstoqueVM> CreateEstoqueItem(EstoqueVM item);
+        Task<EstoqueVM> addEstoque(EstoqueVM item);
 
-        Task UpdateEstoqueItem(EstoqueVM item);
+        Task updateEstoque(EstoqueVM item);
 
-        Task<bool> EstoqueExiste(int id);
+        Task<bool> estoqueExiste(int id);
 
-        Task DeleteEstoqueItem(int id);
+        Task deleteEstoque(int id);
 
-        Task<EstoqueVM> GetEstoqueU(int id);
+        Task<EstoqueVM> getEstoqueId(int id);
     }
 
     public class ServicoEstoque(IRepositorioEstoque repositorioEstoque) : IServicoEstoque
     {
-        public async Task<EstoqueVM> CreateEstoqueItem(EstoqueVM item)
+        public async Task<EstoqueVM> addEstoque(EstoqueVM item)
         {
-            return await repositorioEstoque.CreateEstoqueItem(item);
+            return await repositorioEstoque.addEstoque(item);
         }
 
-        public Task DeleteEstoqueItem(int id)
+        public Task deleteEstoque(int id)
         {
-           return repositorioEstoque.DeleteEstoqueItem(id);
+           return repositorioEstoque.deleteEstoque(id);
         }
 
-        public async Task<bool> EstoqueExiste(int id)
+        public async Task<bool> estoqueExiste(int id)
         {
-            return await repositorioEstoque.EstoqueExiste(id);
+            return await repositorioEstoque.estoqueExiste(id);
         }
 
-        public async Task<List<EstoqueVM>> GetEstoque()
+        public async Task<List<EstoqueVM>> getEstoque()
         {
-            return await repositorioEstoque.GetEstoque();
+            return await repositorioEstoque.getEstoque();
         }
 
-        public async Task<EstoqueVM> GetEstoqueU(int id)
+        public async Task<EstoqueVM> getEstoqueId(int id)
         {
-            return await repositorioEstoque.GetEstoqueU(id);
+            return await repositorioEstoque.getEstoqueId(id);
         }
 
-        public Task UpdateEstoqueItem(EstoqueVM item)
+        public Task updateEstoque(EstoqueVM item)
         {
-            return repositorioEstoque.UpdateEstoqueItem(item);
+            return repositorioEstoque.updateEstoque(item);
         }
 
         

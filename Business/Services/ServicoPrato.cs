@@ -11,40 +11,40 @@ namespace Business.Services
 {
     public interface IServicoPrato 
     {
-        Task<List<PratoVM>> GetPratos();
-        Task<PratoVM> GetPratoId(int id);
-        Task<PratoVM> AddPrato(PratoVM prato);
-        Task UpdatePrato(PratoVM prato);
-        Task DeletePrato(int id);
+        Task<List<PratoVM>> getPratos();
+        Task<PratoVM> getPratoId(int id);
+        Task<PratoVM> addPrato(PratoVM prato);
+        Task updatePrato(PratoVM prato);
+        Task deletePrato(int id);
 
     
     }
 
     public class ServicoPrato(IRepositorioPrato repositorioPrato) : IServicoPrato
     {
-        public async Task<List<PratoVM>> GetPratos()
+        public async Task<List<PratoVM>> getPratos()
         {
-            return await repositorioPrato.GetPratos(); 
+            return await repositorioPrato.getPratos(); 
         }
 
-        public async Task<PratoVM> GetPratoId(int id)
+        public async Task<PratoVM> getPratoId(int id)
         {
-            return await repositorioPrato.GetPratoId(id);
+            return await repositorioPrato.getPratoId(id);
         }
 
-        public async Task DeletePrato(int id)
+        public async Task deletePrato(int id)
         {
-            await repositorioPrato.DeletePrato(id);
+            await repositorioPrato.deletePrato(id);
         }
 
-        public async Task<PratoVM> AddPrato(PratoVM prato)
+        public async Task<PratoVM> addPrato(PratoVM prato)
         {
-            return await repositorioPrato.AddPrato(prato);  
+            return await repositorioPrato.addPrato(prato);  
         }
 
-        public async Task UpdatePrato(PratoVM prato)
+        public async Task updatePrato(PratoVM prato)
         {
-            await repositorioPrato.UpdatePrato(prato);
+            await repositorioPrato.updatePrato(prato);
         }
     }
 }

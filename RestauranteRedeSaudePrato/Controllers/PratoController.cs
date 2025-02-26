@@ -12,16 +12,16 @@ namespace RestauranteRedeSaudePrato.Controllers
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
             [HttpGet]
-            public async Task<ActionResult<ModelodeResposta>> GetPratos()
+            public async Task<ActionResult<ModelodeResposta>> getPratos()
             {
-                var pratos = await servicoPrato.GetPratos();
+                var pratos = await servicoPrato.getPratos();
                 return Ok(new ModelodeResposta { sucesso = true, info = pratos });
             }
 
         [HttpGet("id")]
-        public async Task<ActionResult<ModelodeResposta>> GetPratoId(int id)
+        public async Task<ActionResult<ModelodeResposta>> getPratoId(int id)
         {
-            var prato = await servicoPrato.GetPratoId(id);
+            var prato = await servicoPrato.getPratoId(id);
             if (prato == null)
             {
                 return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
@@ -31,28 +31,28 @@ namespace RestauranteRedeSaudePrato.Controllers
         }
 
         [HttpDelete("id")]
-        public async Task<IActionResult> DeletePrato(int id)
+        public async Task<IActionResult> deletePrato(int id)
         {
-            await servicoPrato.DeletePrato(id);
+            await servicoPrato.deletePrato(id);
             return Ok(new ModelodeResposta { sucesso = true });
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<PratoVM>> AddPrato(PratoVM prato)
+        public async Task<ActionResult<PratoVM>> addPrato(PratoVM prato)
         {
-            await servicoPrato.AddPrato(prato);
+            await servicoPrato.addPrato(prato);
             return Ok(new ModelodeResposta { sucesso = true });
         }
 
         [HttpPut("id")]
-        public async Task<IActionResult> UpdatePrato(int id, PratoVM prato)
+        public async Task<IActionResult> updatePrato(int id, PratoVM prato)
         {
             if (id != prato.id)
             {
                 return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
             }
-            await servicoPrato.UpdatePrato(prato);
+            await servicoPrato.updatePrato(prato);
             return Ok(new ModelodeResposta { sucesso = true });
         }
     }
