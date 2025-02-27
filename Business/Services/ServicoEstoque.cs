@@ -11,48 +11,57 @@ namespace Business.Services
     public interface IServicoEstoque
     {
         Task<List<Estoque>> getEstoque();
-
         Task<Estoque> addEstoque(Estoque item);
-
         Task updateEstoque(Estoque item);
-
         Task<bool> estoqueExiste(int id);
-
         Task deleteEstoque(int id);
-
         Task<Estoque> getEstoqueId(int id);
     }
 
-    public class ServicoEstoque(IRepositorioEstoque repositorioEstoque) : IServicoEstoque
+    public class ServicoEstoque : IServicoEstoque
     {
+        private readonly IRepositorioEstoque _repositorioEstoque;
+
+        public ServicoEstoque(IRepositorioEstoque repositorioEstoque)
+        {
+            _repositorioEstoque = repositorioEstoque ?? throw new ArgumentNullException(nameof(repositorioEstoque));
+        }
         public async Task<Estoque> addEstoque(Estoque item)
         {
-            return await repositorioEstoque.addEstoque(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
+
+            return await _repositorioEstoque.addEstoque(item);    
         }
 
-        public Task deleteEstoque(int id)
+        public async Task deleteEstoque(int id)
         {
-           return repositorioEstoque.deleteEstoque(id);
+           if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            await _repositorioEstoque.deleteEstoque(id);
         }
 
         public async Task<bool> estoqueExiste(int id)
         {
-            return await repositorioEstoque.estoqueExiste(id);
+            return await _repositorioEstoque.estoqueExiste(id);
         }
 
         public async Task<List<Estoque>> getEstoque()
         {
-            return await repositorioEstoque.getEstoque();
+            return await _repositorioEstoque.getEstoque();
         }
 
         public async Task<Estoque> getEstoqueId(int id)
         {
-            return await repositorioEstoque.getEstoqueId(id);
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            var estoque = await _repositorioEstoque.getEstoqueId(id);
+            return estoque ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
         }
 
-        public Task updateEstoque(Estoque item)
+        public async Task updateEstoque(Estoque item)
         {
-            return repositorioEstoque.updateEstoque(item);
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item.id <= 0) throw new ArgumentException("Id inválido.", nameof(item));
+            await _repositorioEstoque.updateEstoque(item);
         }
 
         

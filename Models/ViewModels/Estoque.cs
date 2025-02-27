@@ -8,9 +8,14 @@ namespace Models.ViewModels
 {
     public class Estoque
     {
-        public int id { get; set; }  
+        public int id { get; set; }
 
-        public string nome { get; set; }  
+        private string _nome = string.Empty;
+        public string nome
+        {
+            get => _nome;
+            set => _nome = string.IsNullOrWhiteSpace(value) ? throw new ArgumentException("Nome é obrigatório.") : value;
+        }
 
         public int quantidade { get; set; }  
 

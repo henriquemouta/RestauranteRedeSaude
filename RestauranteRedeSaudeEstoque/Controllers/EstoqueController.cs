@@ -11,7 +11,6 @@ namespace RestauranteRedeSaudeEstoque.Controllers
     public class EstoqueController(IServicoEstoque servicoEstoque) : ControllerBase
     {
         [HttpGet]
-        
         public async Task<ActionResult<ModelodeResposta>> getEstoque()
         {
             var estoque = await servicoEstoque.getEstoque();
@@ -23,8 +22,6 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         {
             await servicoEstoque.addEstoque(item);
             return Ok(new ModelodeResposta { sucesso = true });
-
-
         }
 
         [HttpPut("{id}")]
@@ -58,13 +55,16 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ModelodeResposta>> getEstoqueId(int id)
         {
-            var estoqueitem = await servicoEstoque.getEstoqueId(id);
-            return Ok(new ModelodeResposta { sucesso = true, info = estoqueitem });
+            
+            var estoque = await servicoEstoque.getEstoqueId(id);
+            if (estoque == null)
+            {
+                return Ok(new ModelodeResposta { sucesso = false, erro = "Estoque item não encontrado" });
+            }
+            return Ok(new ModelodeResposta { sucesso = true, info = estoque });
 
         }
 
-
-
-
+        
     }
 }

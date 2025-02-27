@@ -42,6 +42,7 @@ namespace RestauranteRedeSaudeFornecedores.Controller
             {
                 return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
             }
+
             await servicoFornecedor.updateFornecedor(fornecedor);
             return Ok(new ModelodeResposta { sucesso = true });
 
