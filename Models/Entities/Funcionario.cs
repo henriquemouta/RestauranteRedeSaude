@@ -17,6 +17,6 @@ namespace Models.ViewModels
         }
         public string cargo { get; set; }  
         public string telefone { get; set; }
-        public DateTime dataCriacao { get; set; }
+        public DateTime? dataCriacao { get; set; }
     }
 }

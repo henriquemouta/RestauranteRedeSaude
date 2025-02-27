@@ -1,4 +1,5 @@
 ﻿using Business.Repositorios;
+using Data.Data;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Logging;
 using Models.ViewModels;
@@ -14,6 +15,9 @@ namespace Business.Services
 {
     public interface IServicoEstoque
     {
+        Task<IQueryable<Estoque>> getEstoque();
+        Task<Estoque> addEstoque(Estoque item);
+        Task updateEstoque(Estoque item);
         Task<List<EstoqueVM>> getEstoque();
         Task<EstoqueVM> addEstoque(EstoqueVM item);
         Task<EstoqueVM> updateEstoque(EstoqueVM item);
@@ -24,16 +28,26 @@ namespace Business.Services
 
     public class ServicoEstoque : IServicoEstoque
     {
-        private readonly IRepositorioEstoque _repositorioEstoque;
+        private readonly IRepositorioEstoque repositorioEstoque;
+
+
 
         public ServicoEstoque(IRepositorioEstoque repositorioEstoque)
         {
-            _repositorioEstoque = repositorioEstoque ?? throw new ArgumentNullException(nameof(repositorioEstoque));
+            this.repositorioEstoque = repositorioEstoque ?? throw new ArgumentNullException(nameof(repositorioEstoque));
         }
         public async Task<EstoqueVM> addEstoque(EstoqueVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
+
+            await repositorioEstoque.addEstoque(item);
+            await repositorioEstoque.saveChangesAsync();
+
+            return item;
+            
+            
+
             Estoque estoque = new Estoque();
             estoque.nome = item.nome;
             estoque.id = item.id;
@@ -48,16 +62,20 @@ namespace Business.Services
         public async Task deleteEstoque(int id)
         {
            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            await _repositorioEstoque.deleteEstoque(id);
+            await repositorioEstoque.deleteEstoque(id);
+            await repositorioEstoque.saveChangesAsync();
         }
 
         public async Task<bool> estoqueExiste(int id)
         {
-            return await _repositorioEstoque.estoqueExiste(id);
+            return await repositorioEstoque.estoqueExiste(id);
         }
 
+        public async Task<IQueryable<Estoque>> getEstoque()
         public async Task<List<EstoqueVM>> getEstoque()
         {
+            return await repositorioEstoque.getEstoque();
+
  
             List<Estoque> listaEstoque = await _repositorioEstoque.getEstoque();
             List<EstoqueVM> listaEstoqueVM = listaEstoque
@@ -77,6 +95,8 @@ namespace Business.Services
         public async Task<EstoqueVM> getEstoqueId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            var estoque = await repositorioEstoque.getEstoqueId(id);
+            return estoque ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
             var estoque = await _repositorioEstoque.getEstoqueId(id);
             EstoqueVM item = new EstoqueVM();
             item.id = id;
@@ -92,6 +112,9 @@ namespace Business.Services
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (item.id <= 0) throw new ArgumentException("Id inválido.", nameof(item));
+            await repositorioEstoque.updateEstoque(item);
+            await repositorioEstoque.saveChangesAsync();
+
             Estoque estoque = new Estoque();
             estoque.id = item.id;
             estoque.nome = item.nome;  

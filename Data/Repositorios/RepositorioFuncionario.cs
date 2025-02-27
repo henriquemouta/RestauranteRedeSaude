@@ -13,11 +13,13 @@ namespace Business.Repositorios
 
     public interface IRepositorioFuncionario
     {
-        Task<List<Funcionario>> getFuncionarios();
+        Task<IQueryable<Funcionario>> getFuncionarios();
         Task<Funcionario> getFuncionarioId(int id);
         Task<Funcionario> addFuncionario(Funcionario funcionario);
         Task updateFuncionario(Funcionario funcionarioVM);
         Task deleteFuncionario(int id);
+
+        Task saveChangesAsync();
     }
     public class RepositorioFuncionario : IRepositorioFuncionario
     {
@@ -57,9 +59,9 @@ namespace Business.Repositorios
                 throw new Exception(e.Message);
             }
         }
-        public async Task<List<Funcionario>> getFuncionarios()
+        public async Task<IQueryable<Funcionario>> getFuncionarios()
         {
-            return await _dbContext.Funcionario.AsNoTracking().ToListAsync();
+            return _dbContext.Funcionario.AsNoTracking();
         }
 
         public async Task<Funcionario> getFuncionarioId(int id)
@@ -79,6 +81,9 @@ namespace Business.Repositorios
                 throw new Exception(e.Message);
             }
         }
-    
+        public async Task saveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
