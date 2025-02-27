@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ViewsModels.ViewsModels.Fornecedor
 {
-    public class FornecedorVM
+    public class FornecedorUpdateVM
     {
         public int id { get; set; }
 
@@ -13,6 +13,6 @@ namespace ViewsModels.ViewsModels.Fornecedor
         public string cnpj { get; set; }
 
         public string telefone { get; set; }
-        public FornecedorVM () { }
+        public FornecedorUpdateVM() { }
     }
 }

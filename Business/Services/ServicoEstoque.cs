@@ -17,8 +17,8 @@ namespace Business.Services
     {
         Task<IQueryable<EstoqueVM>> getEstoque();
 
-        Task<EstoqueVM> addEstoque(EstoqueVM item);
-        Task<EstoqueVM> updateEstoque(EstoqueVM item);
+        Task<EstoqueIncluirVM> addEstoque(EstoqueIncluirVM item);
+        Task<EstoqueUpdateVM> updateEstoque(EstoqueUpdateVM item);
         Task<bool> estoqueExiste(int id);
         Task deleteEstoque(int id);
         Task<EstoqueVM> getEstoqueId(int id);
@@ -34,7 +34,7 @@ namespace Business.Services
         {
             this.repositorioEstoque = repositorioEstoque ?? throw new ArgumentNullException(nameof(repositorioEstoque));
         }
-        public async Task<EstoqueVM> addEstoque(EstoqueVM item)
+        public async Task<EstoqueIncluirVM> addEstoque(EstoqueIncluirVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
@@ -92,7 +92,7 @@ namespace Business.Services
             return item ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
         }
 
-        public async Task<EstoqueVM> updateEstoque(EstoqueVM item)
+        public async Task<EstoqueUpdateVM> updateEstoque(EstoqueUpdateVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (item.id <= 0) throw new ArgumentException("Id inválido.", nameof(item));

@@ -4,9 +4,8 @@ using System.Text;
 
 namespace ViewsModels.ViewsModels.Prato
 {
-    public class PratoVM
+    public class PratoIncluirVM
     {
-
         public int id { get; set; }
 
 
@@ -18,6 +17,6 @@ namespace ViewsModels.ViewsModels.Prato
 
         public string categoria { get; set; }
 
-        public PratoVM() { }
+        public PratoIncluirVM() { }
     }
 }

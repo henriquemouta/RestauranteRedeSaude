@@ -19,23 +19,23 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EstoqueVM>> addEstoque(EstoqueVM item)
+        public async Task<ActionResult<EstoqueIncluirVM>> addEstoque(EstoqueIncluirVM item)
         {
             await servicoEstoque.addEstoque(item);
-            return Ok(new ModelodeResposta<EstoqueVM> { sucesso = true , info = item});
+            return Ok(new ModelodeResposta<EstoqueIncluirVM> { sucesso = true , info = item});
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> updateEstoque(int id, EstoqueVM estoque)
+        public async Task<IActionResult> updateEstoque(int id, EstoqueUpdateVM estoque)
         {
             if (id != estoque.id || !await servicoEstoque.estoqueExiste(id))
             {
-                return Ok(new ModelodeResposta<EstoqueVM> { sucesso = false, erro = "ID INVÁLIDO" });
+                return Ok(new ModelodeResposta<EstoqueUpdateVM> { sucesso = false, erro = "ID INVÁLIDO" });
 
             }
 
             await servicoEstoque.updateEstoque(estoque);
-            return Ok(new ModelodeResposta<EstoqueVM> { sucesso = true});
+            return Ok(new ModelodeResposta<EstoqueUpdateVM> { sucesso = true});
 
         }
 
