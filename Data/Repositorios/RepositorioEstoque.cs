@@ -11,7 +11,7 @@ namespace Business.Repositorios
 {
     public interface IRepositorioEstoque
     {
-        Task<List<Estoque>> getEstoque();
+        Task<IQueryable<Estoque>> getEstoque();
         Task<Estoque> getEstoqueId(int id);
 
         Task<Estoque> addEstoque(Estoque item);
@@ -21,6 +21,8 @@ namespace Business.Repositorios
         Task deleteEstoque(int id);
 
         Task<bool> estoqueExiste(int id);
+
+        Task saveChangesAsync();
 
     }
 
@@ -33,13 +35,16 @@ namespace Business.Repositorios
             _dbContext = dbContext;
         }
 
+        public async Task saveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
 
         public async Task<Estoque> addEstoque(Estoque item)
         {
             try
             {
                 _dbContext.Estoque.Add(item);
-                await _dbContext.SaveChangesAsync();
                 return item;
             }
             catch (Exception e)
@@ -59,7 +64,7 @@ namespace Business.Repositorios
                     throw new KeyNotFoundException("Item não encontrado.");
                 }
                 _dbContext.Estoque.Remove(estoque);
-                await _dbContext.SaveChangesAsync();
+                
             }
             catch (Exception e)
             {
@@ -72,9 +77,9 @@ namespace Business.Repositorios
             return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
         }
 
-        public async Task<List<Estoque>> getEstoque()
+        public async Task<IQueryable<Estoque>> getEstoque()
         {
-            return await _dbContext.Estoque.AsNoTracking().ToListAsync();
+            return _dbContext.Estoque.AsNoTracking();
         }
 
         public async Task<Estoque> getEstoqueId(int id)
@@ -87,7 +92,7 @@ namespace Business.Repositorios
             try
             {
                 _dbContext.Entry(item).State = EntityState.Modified;
-                await _dbContext.SaveChangesAsync();
+                
             }
             catch (Exception e)
             {

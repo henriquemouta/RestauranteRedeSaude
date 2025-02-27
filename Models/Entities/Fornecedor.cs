@@ -24,6 +24,6 @@ namespace Models.ViewModels
         }
  
         public string? telefone { get; set; }
-        public DateTime dataCriacao { get; set; }
+        public DateTime? dataCriacao { get; set; }
     }
 }

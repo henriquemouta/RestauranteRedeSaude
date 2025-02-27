@@ -39,7 +39,6 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         }
 
         [HttpDelete("{id}")]
-
         public async Task<IActionResult> deleteEstoque(int id)
         {
             if (!await servicoEstoque.estoqueExiste(id))
