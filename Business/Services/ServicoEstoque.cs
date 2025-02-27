@@ -1,21 +1,25 @@
 ﻿using Business.Repositorios;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.IdentityModel.Logging;
 using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using ViewsModels.ViewsModels.Estoque;
 
 namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<List<Estoque>> getEstoque();
-        Task<Estoque> addEstoque(Estoque item);
-        Task updateEstoque(Estoque item);
+        Task<List<EstoqueVM>> getEstoque();
+        Task<EstoqueVM> addEstoque(EstoqueVM item);
+        Task<EstoqueVM> updateEstoque(EstoqueVM item);
         Task<bool> estoqueExiste(int id);
         Task deleteEstoque(int id);
-        Task<Estoque> getEstoqueId(int id);
+        Task<EstoqueVM> getEstoqueId(int id);
     }
 
     public class ServicoEstoque : IServicoEstoque
@@ -26,12 +30,19 @@ namespace Business.Services
         {
             _repositorioEstoque = repositorioEstoque ?? throw new ArgumentNullException(nameof(repositorioEstoque));
         }
-        public async Task<Estoque> addEstoque(Estoque item)
+        public async Task<EstoqueVM> addEstoque(EstoqueVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
-
-            return await _repositorioEstoque.addEstoque(item);    
+            Estoque estoque = new Estoque();
+            estoque.nome = item.nome;
+            estoque.id = item.id;
+            estoque.quantidade = item.quantidade;
+            estoque.categoria = item.categoria;
+            estoque.precoUnitario = item.precoUnitario;
+            estoque.dataCriacao = DateTime.Now;
+            await _repositorioEstoque.addEstoque(estoque);  
+            return item;
         }
 
         public async Task deleteEstoque(int id)
@@ -45,23 +56,49 @@ namespace Business.Services
             return await _repositorioEstoque.estoqueExiste(id);
         }
 
-        public async Task<List<Estoque>> getEstoque()
+        public async Task<List<EstoqueVM>> getEstoque()
         {
-            return await _repositorioEstoque.getEstoque();
+ 
+            List<Estoque> item = await _repositorioEstoque.getEstoque();
+            List<EstoqueVM> estoque = new List<EstoqueVM>();
+            for (int i = 0; item.Count > i; i++)
+            {
+                estoque[i].id = item[i].id;
+                estoque[i].nome = item[i].nome;
+                estoque[i].quantidade = item[i].quantidade;
+                estoque[i].categoria = item[i].categoria; 
+                estoque[i].precoUnitario = item[i].precoUnitario;
+            }
+            return estoque;
+
         }
 
-        public async Task<Estoque> getEstoqueId(int id)
+        public async Task<EstoqueVM> getEstoqueId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
             var estoque = await _repositorioEstoque.getEstoqueId(id);
-            return estoque ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
+            EstoqueVM item = new EstoqueVM();
+            item.id = id;
+            item.nome = estoque.nome;
+            item.quantidade = estoque.quantidade;
+            item.categoria = estoque.categoria;
+            item.precoUnitario = estoque.precoUnitario;
+            
+            return item ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
         }
 
-        public async Task updateEstoque(Estoque item)
+        public async Task<EstoqueVM> updateEstoque(EstoqueVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (item.id <= 0) throw new ArgumentException("Id inválido.", nameof(item));
-            await _repositorioEstoque.updateEstoque(item);
+            Estoque estoque = new Estoque();
+            estoque.id = item.id;
+            estoque.nome = item.nome;  
+            estoque.categoria = item.categoria;
+            estoque.precoUnitario= item.precoUnitario;
+
+            await _repositorioEstoque.updateEstoque(estoque);
+            return item;
         }
 
         
