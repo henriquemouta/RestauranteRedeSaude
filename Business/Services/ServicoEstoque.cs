@@ -59,17 +59,18 @@ namespace Business.Services
         public async Task<List<EstoqueVM>> getEstoque()
         {
  
-            List<Estoque> item = await _repositorioEstoque.getEstoque();
-            List<EstoqueVM> estoque = new List<EstoqueVM>();
-            for (int i = 0; item.Count > i; i++)
+            List<Estoque> listaEstoque = await _repositorioEstoque.getEstoque();
+            List<EstoqueVM> listaEstoqueVM = listaEstoque
+            .Select(e => new EstoqueVM
             {
-                estoque[i].id = item[i].id;
-                estoque[i].nome = item[i].nome;
-                estoque[i].quantidade = item[i].quantidade;
-                estoque[i].categoria = item[i].categoria; 
-                estoque[i].precoUnitario = item[i].precoUnitario;
-            }
-            return estoque;
+                id = e.id,
+                nome = e.nome,
+                quantidade = e.quantidade,
+                precoUnitario = e.precoUnitario,
+                categoria = e.categoria,
+            }).ToList();
+
+            return listaEstoqueVM;
 
         }
 
