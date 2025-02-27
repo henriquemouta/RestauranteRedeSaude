@@ -11,7 +11,6 @@ namespace RestauranteRedeSaudeEstoque.Controllers
     public class EstoqueController(IServicoEstoque servicoEstoque) : ControllerBase
     {
         [HttpGet]
-        
         public async Task<ActionResult<ModelodeResposta>> getEstoque()
         {
             var estoque = await servicoEstoque.getEstoque();
@@ -42,7 +41,6 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         }
 
         [HttpDelete("{id}")]
-
         public async Task<IActionResult> deleteEstoque(int id)
         {
             if (!await servicoEstoque.estoqueExiste(id))
