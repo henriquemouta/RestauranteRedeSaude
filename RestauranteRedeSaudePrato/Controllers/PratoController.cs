@@ -12,10 +12,10 @@ namespace RestauranteRedeSaudePrato.Controllers
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<Prato>>>> getPratos()
+        public async Task<ActionResult<ModelodeResposta<IQueryable<Prato>>>> getPratos()
         {
             var pratos = await servicoPrato.getPratos();
-            return Ok(new ModelodeResposta<List<Prato>> { sucesso = true, info = pratos });
+            return Ok(new ModelodeResposta<IQueryable<Prato>> { sucesso = true, info = pratos });
         }
 
         [HttpGet("id")]

@@ -11,10 +11,10 @@ namespace RestauranteRedeSaudeFornecedores.Controller
     public class FornecedorController(IServicoFornecedor servicoFornecedor) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<Fornecedor>>>> getFornecedores()
+        public async Task<ActionResult<ModelodeResposta<IQueryable<Fornecedor>>>> getFornecedores()
         {
             var fornecedores = await servicoFornecedor.getFornecedores();
-            return Ok(new ModelodeResposta<List<Fornecedor>> { sucesso = true, info = fornecedores });
+            return Ok(new ModelodeResposta<IQueryable<Fornecedor>> { sucesso = true, info = fornecedores });
         }
 
         [HttpGet("id")]

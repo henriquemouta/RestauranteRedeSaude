@@ -15,10 +15,8 @@ namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<IQueryable<Estoque>> getEstoque();
-        Task<Estoque> addEstoque(Estoque item);
-        Task updateEstoque(Estoque item);
-        Task<List<EstoqueVM>> getEstoque();
+        Task<IQueryable<EstoqueVM>> getEstoque();
+
         Task<EstoqueVM> addEstoque(EstoqueVM item);
         Task<EstoqueVM> updateEstoque(EstoqueVM item);
         Task<bool> estoqueExiste(int id);
@@ -41,13 +39,6 @@ namespace Business.Services
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
 
-            await repositorioEstoque.addEstoque(item);
-            await repositorioEstoque.saveChangesAsync();
-
-            return item;
-            
-            
-
             Estoque estoque = new Estoque();
             estoque.nome = item.nome;
             estoque.id = item.id;
@@ -55,7 +46,8 @@ namespace Business.Services
             estoque.categoria = item.categoria;
             estoque.precoUnitario = item.precoUnitario;
             estoque.dataCriacao = DateTime.Now;
-            await _repositorioEstoque.addEstoque(estoque);  
+            await repositorioEstoque.addEstoque(estoque);
+            await repositorioEstoque.saveChangesAsync();
             return item;
         }
 
@@ -71,33 +63,25 @@ namespace Business.Services
             return await repositorioEstoque.estoqueExiste(id);
         }
 
-        public async Task<IQueryable<Estoque>> getEstoque()
-        public async Task<List<EstoqueVM>> getEstoque()
+        public async Task<IQueryable<EstoqueVM>> getEstoque()
         {
-            return await repositorioEstoque.getEstoque();
+            IQueryable<Estoque> estoques = await repositorioEstoque.getEstoque(); 
 
- 
-            List<Estoque> listaEstoque = await _repositorioEstoque.getEstoque();
-            List<EstoqueVM> listaEstoqueVM = listaEstoque
-            .Select(e => new EstoqueVM
+            return estoques.Select(e => new EstoqueVM
             {
                 id = e.id,
                 nome = e.nome,
                 quantidade = e.quantidade,
                 precoUnitario = e.precoUnitario,
                 categoria = e.categoria,
-            }).ToList();
-
-            return listaEstoqueVM;
-
+            });
         }
+
 
         public async Task<EstoqueVM> getEstoqueId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
             var estoque = await repositorioEstoque.getEstoqueId(id);
-            return estoque ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
-            var estoque = await _repositorioEstoque.getEstoqueId(id);
             EstoqueVM item = new EstoqueVM();
             item.id = id;
             item.nome = estoque.nome;
@@ -112,8 +96,8 @@ namespace Business.Services
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (item.id <= 0) throw new ArgumentException("Id inválido.", nameof(item));
-            await repositorioEstoque.updateEstoque(item);
-            await repositorioEstoque.saveChangesAsync();
+           
+            
 
             Estoque estoque = new Estoque();
             estoque.id = item.id;
@@ -121,7 +105,8 @@ namespace Business.Services
             estoque.categoria = item.categoria;
             estoque.precoUnitario= item.precoUnitario;
 
-            await _repositorioEstoque.updateEstoque(estoque);
+            await repositorioEstoque.updateEstoque(estoque);
+            await repositorioEstoque.saveChangesAsync();
             return item;
         }
 

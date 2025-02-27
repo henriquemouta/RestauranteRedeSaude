@@ -14,7 +14,7 @@ namespace Business.Repositorios
         Task<IQueryable<Estoque>> getEstoque();
         Task<Estoque> getEstoqueId(int id);
 
-        Task addEstoque(Estoque item);
+        Task<Estoque> addEstoque(Estoque item);
 
         Task updateEstoque(Estoque item);
 
@@ -40,7 +40,7 @@ namespace Business.Repositorios
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task addEstoque(Estoque item)
+        public async Task<Estoque> addEstoque(Estoque item)
         {
             try
             {

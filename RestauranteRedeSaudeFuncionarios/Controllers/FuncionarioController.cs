@@ -11,10 +11,10 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
     public class FuncionarioController(IServicoFuncionario servicoFuncionario) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<Funcionario>>>> getFuncionarios()
+        public async Task<ActionResult<ModelodeResposta<IQueryable<Funcionario>>>> getFuncionarios()
         {
             var funcionarios = await servicoFuncionario.getFuncionarios();
-            return Ok(new ModelodeResposta<List<Funcionario>> { sucesso = true , info = funcionarios });
+            return Ok(new ModelodeResposta<IQueryable<Funcionario>> { sucesso = true , info = funcionarios });
         }
 
         [HttpPost]

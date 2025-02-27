@@ -12,10 +12,10 @@ namespace RestauranteRedeSaudeEstoque.Controllers
     public class EstoqueController(IServicoEstoque servicoEstoque) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<EstoqueVM>>>> getEstoque()
+        public async Task<ActionResult<ModelodeResposta<IQueryable<EstoqueVM>>>> getEstoque()
         {
             var estoque = await servicoEstoque.getEstoque();
-            return Ok(new ModelodeResposta<List<EstoqueVM>> { sucesso = true, info = estoque });
+            return Ok(new ModelodeResposta<IQueryable<EstoqueVM>> { sucesso = true, info = estoque });
         }
 
         [HttpPost]
