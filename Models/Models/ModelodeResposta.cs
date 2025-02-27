@@ -10,10 +10,7 @@ namespace Models.Models
     {
         public bool sucesso { get; set; }
         public string erro { get; set; }
-
         public Object info { get; set; }
-
-
     }
 
 } 

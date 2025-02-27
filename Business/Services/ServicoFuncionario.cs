@@ -11,38 +11,48 @@ namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<List<FuncionarioVM>> getFuncionarios();
-        Task<FuncionarioVM> getFuncionarioId(int id);
-        Task<FuncionarioVM> addFuncionario(FuncionarioVM funcionario);
-        Task updateFuncionar(FuncionarioVM funcionario);
+        Task<List<Funcionario>> getFuncionarios();
+        Task<Funcionario> getFuncionarioId(int id);
+        Task<Funcionario> addFuncionario(Funcionario funcionario);
+        Task updateFuncionar(Funcionario funcionario);
         Task deleteFuncionario(int id);
     }
 
-    public class ServicoFuncionario(IRepositorioFuncionario repositorioFuncionario) : IServicoFuncionario
+    public class ServicoFuncionario : IServicoFuncionario
     {
-        public async Task<FuncionarioVM> addFuncionario(FuncionarioVM funcionario)
+        private readonly IRepositorioFuncionario _repositorioFuncionario;
+        public ServicoFuncionario(IRepositorioFuncionario repositorioFuncionario)
         {
-            return await repositorioFuncionario.addFuncionario(funcionario);
+            _repositorioFuncionario = repositorioFuncionario ?? throw new ArgumentNullException(nameof(repositorioFuncionario));
+        }
+        public async Task<Funcionario> addFuncionario(Funcionario funcionario)
+        {
+            if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
+            if (string.IsNullOrWhiteSpace(funcionario.nome)) throw new ArgumentException("Nome é obrigatório.", nameof(funcionario));
+            return await _repositorioFuncionario.addFuncionario(funcionario);
         }
 
         public async Task deleteFuncionario(int id)
         {
-             await repositorioFuncionario.deleteFuncionario(id);
+             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
         }
 
-        public async Task<List<FuncionarioVM>> getFuncionarios()
+        public async Task<List<Funcionario>> getFuncionarios()
         {
-            return await repositorioFuncionario.getFuncionarios();        
+            return await _repositorioFuncionario.getFuncionarios();        }
+
+        public async Task<Funcionario> getFuncionarioId(int id)
+        {
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            var funcionario = await _repositorioFuncionario.getFuncionarioId(id);
+            return funcionario ?? throw new KeyNotFoundException($"Funcionario com Id {id} não encontrado.");
         }
 
-        public async Task<FuncionarioVM> getFuncionarioId(int id)
+        public async Task updateFuncionar(Funcionario funcionario)
         {
-            return await repositorioFuncionario.getFuncionarioId(id);
-        }
-
-        public async Task updateFuncionar(FuncionarioVM funcionario)
-        {
-            await repositorioFuncionario.updateFuncionario(funcionario);
+            if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
+            if (funcionario.id <= 0) throw new ArgumentException("Id inválido.", nameof(funcionario));
+            await _repositorioFuncionario.updateFuncionario(funcionario);
         }
     }
 }

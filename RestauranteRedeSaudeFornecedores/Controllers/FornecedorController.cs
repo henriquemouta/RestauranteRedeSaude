@@ -18,7 +18,7 @@ namespace RestauranteRedeSaudeFornecedores.Controller
         }
 
         [HttpGet("id")]
-        public async Task<ActionResult<FornecedorVM>> getFornecedorId(int id)
+        public async Task<ActionResult<Fornecedor>> getFornecedorId(int id)
         {
             var fornecedor = servicoFornecedor.getFornecedorId(id);
             if (fornecedor == null)
@@ -29,19 +29,20 @@ namespace RestauranteRedeSaudeFornecedores.Controller
         }
 
         [HttpPost]
-        public async Task<ActionResult<FornecedorVM>> addFornecedor(FornecedorVM fornecedor)
+        public async Task<ActionResult<Fornecedor>> addFornecedor(Fornecedor fornecedor)
         {
             await servicoFornecedor.addFornecedor(fornecedor);
             return Ok(new ModelodeResposta { sucesso = true });
         }
 
         [HttpPut("id")]
-        public async Task<IActionResult> updateFornecedor(int id, FornecedorVM fornecedor)
+        public async Task<IActionResult> updateFornecedor(int id, Fornecedor fornecedor)
         {
-            if (id != fornecedor.ID)
+            if (id != fornecedor.id)
             {
                 return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
             }
+
             await servicoFornecedor.updateFornecedor(fornecedor);
             return Ok(new ModelodeResposta { sucesso = true });
 

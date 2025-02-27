@@ -11,40 +11,50 @@ namespace Business.Services
 {
     public interface IServicoPrato 
     {
-        Task<List<PratoVM>> getPratos();
-        Task<PratoVM> getPratoId(int id);
-        Task<PratoVM> addPrato(PratoVM prato);
-        Task updatePrato(PratoVM prato);
+        Task<List<Prato>> getPratos();
+        Task<Prato> getPratoId(int id);
+        Task<Prato> addPrato(Prato prato);
+        Task updatePrato(Prato prato);
         Task deletePrato(int id);
-
-    
     }
 
-    public class ServicoPrato(IRepositorioPrato repositorioPrato) : IServicoPrato
+    public class ServicoPrato : IServicoPrato
     {
-        public async Task<List<PratoVM>> getPratos()
+        private readonly IRepositorioPrato _repositorioPrato;
+        public ServicoPrato(IRepositorioPrato repositorioPrato)
         {
-            return await repositorioPrato.getPratos(); 
+            _repositorioPrato = repositorioPrato ?? throw new ArgumentNullException(nameof(repositorioPrato));
+        }
+        public async Task<List<Prato>> getPratos()
+        {
+            return await _repositorioPrato.getPratos(); 
         }
 
-        public async Task<PratoVM> getPratoId(int id)
+        public async Task<Prato> getPratoId(int id)
         {
-            return await repositorioPrato.getPratoId(id);
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            var prato = await _repositorioPrato.getPratoId(id);
+            return prato ?? throw new KeyNotFoundException($"Prato com Id {id} não encontrado.");
         }
 
         public async Task deletePrato(int id)
         {
-            await repositorioPrato.deletePrato(id);
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            await _repositorioPrato.deletePrato(id);
         }
 
-        public async Task<PratoVM> addPrato(PratoVM prato)
+        public async Task<Prato> addPrato(Prato prato)
         {
-            return await repositorioPrato.addPrato(prato);  
+            if (prato == null) throw new ArgumentNullException(nameof(prato));
+            if (string.IsNullOrWhiteSpace(prato.nome)) throw new ArgumentException("Nome é obrigatório.", nameof(prato));
+            return await _repositorioPrato.addPrato(prato);
         }
 
-        public async Task updatePrato(PratoVM prato)
+        public async Task updatePrato(Prato prato)
         {
-            await repositorioPrato.updatePrato(prato);
+            if (prato == null) throw new ArgumentNullException(nameof(prato));
+            if (prato.id <= 0) throw new ArgumentException("Id inválido.", nameof(prato));
+            await _repositorioPrato.updatePrato(prato);
         }
     }
 }

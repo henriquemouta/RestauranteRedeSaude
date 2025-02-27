@@ -18,18 +18,16 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EstoqueVM>> addEstoque(EstoqueVM item)
+        public async Task<ActionResult<Estoque>> addEstoque(Estoque item)
         {
             await servicoEstoque.addEstoque(item);
             return Ok(new ModelodeResposta { sucesso = true });
-
-
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> updateEstoque(int id, EstoqueVM estoque)
+        public async Task<IActionResult> updateEstoque(int id, Estoque estoque)
         {
-            if (id != estoque.ID || !await servicoEstoque.estoqueExiste(id))
+            if (id != estoque.id || !await servicoEstoque.estoqueExiste(id))
             {
                 return Ok(new ModelodeResposta { sucesso = false, erro = "ID INVÁLIDO" });
 
@@ -56,13 +54,16 @@ namespace RestauranteRedeSaudeEstoque.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ModelodeResposta>> getEstoqueId(int id)
         {
-            var estoqueitem = await servicoEstoque.getEstoqueId(id);
-            return Ok(new ModelodeResposta { sucesso = true, info = estoqueitem });
+            
+            var estoque = await servicoEstoque.getEstoqueId(id);
+            if (estoque == null)
+            {
+                return Ok(new ModelodeResposta { sucesso = false, erro = "Estoque item não encontrado" });
+            }
+            return Ok(new ModelodeResposta { sucesso = true, info = estoque });
 
         }
 
-
-
-
+        
     }
 }

@@ -10,37 +10,49 @@ namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<List<FornecedorVM>> getFornecedores();
-        Task<FornecedorVM> getFornecedorId(int id);
-        Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor);
-        Task updateFornecedor(FornecedorVM fornecedor);
+        Task<List<Fornecedor>> getFornecedores();
+        Task<Fornecedor> getFornecedorId(int id);
+        Task<Fornecedor> addFornecedor(Fornecedor fornecedor);
+        Task updateFornecedor(Fornecedor fornecedor);
         Task deleteFornecedor(int id);
     }
-    public class ServicoFornecedor(IRepositorioFornecedor repositorioFornecedor) : IServicoFornecedor
+    public class ServicoFornecedor : IServicoFornecedor
     {
-        public async Task<FornecedorVM> addFornecedor(FornecedorVM fornecedor)
+        private readonly IRepositorioFornecedor _repositorioFornecedor;
+        public ServicoFornecedor(IRepositorioFornecedor repositorioFornecedor)
         {
-            return await repositorioFornecedor.addFornecedor(fornecedor);
+            _repositorioFornecedor = repositorioFornecedor ?? throw new ArgumentNullException(nameof(repositorioFornecedor));
+        }
+        public async Task<Fornecedor> addFornecedor(Fornecedor fornecedor)
+        {
+            if (fornecedor == null) throw new ArgumentNullException(nameof(fornecedor));
+            if (string.IsNullOrWhiteSpace(fornecedor.cnpj)) throw new ArgumentException("CNPJ é obrigatório.", nameof(fornecedor));
+            return await _repositorioFornecedor.addFornecedor(fornecedor);
         }
 
         public async Task deleteFornecedor(int id)
         {
-            await repositorioFornecedor.deleteFornecedor(id); 
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            await _repositorioFornecedor.deleteFornecedor(id); 
         }
 
-        public async Task<List<FornecedorVM>> getFornecedores()
+        public async Task<List<Fornecedor>> getFornecedores()
         {
-            return await repositorioFornecedor.getFornecedores();
+            return await _repositorioFornecedor.getFornecedores();
         }
 
-        public async Task<FornecedorVM> getFornecedorId(int id)
+        public async Task<Fornecedor> getFornecedorId(int id)
         {
-            return await repositorioFornecedor.getFornecedorId(id);
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            var fornecedor = await _repositorioFornecedor.getFornecedorId(id);
+            return fornecedor ?? throw new KeyNotFoundException($"Fornecedor com Id {id} não encontrado.");
         }
 
-        public async Task updateFornecedor(FornecedorVM fornecedor)
+        public async Task updateFornecedor(Fornecedor fornecedor)
         {
-            await repositorioFornecedor.updateFornecedor(fornecedor);
+            if (fornecedor == null) throw new ArgumentNullException(nameof(fornecedor));
+            if (fornecedor.id <= 0) throw new ArgumentException("Id inválido.", nameof(fornecedor));
+            await _repositorioFornecedor.updateFornecedor(fornecedor);
         }
     }
 }

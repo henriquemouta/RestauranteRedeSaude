@@ -1,0 +1,98 @@
+﻿using Data.Data;
+using Microsoft.EntityFrameworkCore;
+using Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Business.Repositorios
+{
+    public interface IRepositorioEstoque
+    {
+        Task<List<Estoque>> getEstoque();
+        Task<Estoque> getEstoqueId(int id);
+
+        Task<Estoque> addEstoque(Estoque item);
+
+        Task updateEstoque(Estoque item);
+
+        Task deleteEstoque(int id);
+
+        Task<bool> estoqueExiste(int id);
+
+    }
+
+    public class RepositorioEstoque : IRepositorioEstoque
+    {
+
+        private readonly AppDbContext _dbContext;
+        public RepositorioEstoque(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+
+        public async Task<Estoque> addEstoque(Estoque item)
+        {
+            try
+            {
+                _dbContext.Estoque.Add(item);
+                await _dbContext.SaveChangesAsync();
+                return item;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+           
+        }
+
+        public async Task deleteEstoque(int id)
+        {
+            try
+            {
+                var estoque = await _dbContext.Estoque.FindAsync(id);
+                if (estoque == null)
+                {
+                    throw new KeyNotFoundException("Item não encontrado.");
+                }
+                _dbContext.Estoque.Remove(estoque);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<bool> estoqueExiste(int id)
+        {
+            return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
+        }
+
+        public async Task<List<Estoque>> getEstoque()
+        {
+            return await _dbContext.Estoque.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<Estoque> getEstoqueId(int id)
+        {
+            return await _dbContext.Estoque.AsNoTracking().FirstOrDefaultAsync(sel => sel.id == id);
+        }
+
+        public async Task updateEstoque(Estoque item)
+        {
+            try
+            {
+                _dbContext.Entry(item).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
+}
