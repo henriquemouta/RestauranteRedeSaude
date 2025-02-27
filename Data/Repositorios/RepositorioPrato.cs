@@ -11,7 +11,7 @@ namespace Business.Repositorios
 {
     public interface IRepositorioPrato
     {
-       Task<List<Prato>> getPratos();
+       Task<IQueryable<Prato>> getPratos();
         Task<Prato> getPratoId(int id);
         Task<Prato> addPrato(Prato prato);
         Task updatePrato(Prato prato);
@@ -26,9 +26,9 @@ namespace Business.Repositorios
         {
             _dbContext = dbContext;
         }
-        public async Task<List<Prato>> getPratos()
+        public async Task<IQueryable<Prato>> getPratos()
         {
-            return await _dbContext.Prato.AsNoTracking().ToListAsync();
+            return _dbContext.Prato.AsNoTracking();
         }
 
         public async Task<Prato> getPratoId(int id)

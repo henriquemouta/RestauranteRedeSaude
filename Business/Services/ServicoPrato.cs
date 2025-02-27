@@ -11,7 +11,7 @@ namespace Business.Services
 {
     public interface IServicoPrato 
     {
-        Task<List<Prato>> getPratos();
+        Task<IQueryable<Prato>> getPratos();
         Task<Prato> getPratoId(int id);
         Task<Prato> addPrato(Prato prato);
         Task updatePrato(Prato prato);
@@ -25,7 +25,7 @@ namespace Business.Services
         {
             this.repositorioPrato = repositorioPrato ?? throw new ArgumentNullException(nameof(repositorioPrato));
         }
-        public async Task<List<Prato>> getPratos()
+        public async Task<IQueryable<Prato>> getPratos()
         {
             return await repositorioPrato.getPratos(); 
         }
@@ -33,23 +33,32 @@ namespace Business.Services
         public async Task<Prato> getPratoId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+
             var prato = await repositorioPrato.getPratoId(id);
+
             return prato ?? throw new KeyNotFoundException($"Prato com Id {id} não encontrado.");
         }
 
         public async Task deletePrato(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+
             await repositorioPrato.deletePrato(id);
+
             await repositorioPrato.saveChangesAsync();
         }
 
         public async Task<Prato> addPrato(Prato prato)
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));
+
             if (string.IsNullOrWhiteSpace(prato.nome)) throw new ArgumentException("Nome é obrigatório.", nameof(prato));
+
             await repositorioPrato.saveChangesAsync();
-            return await repositorioPrato.addPrato(prato);
+
+            await repositorioPrato.addPrato(prato);
+
+            return prato;
             
         }
 

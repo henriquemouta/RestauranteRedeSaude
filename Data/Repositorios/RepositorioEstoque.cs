@@ -11,7 +11,7 @@ namespace Business.Repositorios
 {
     public interface IRepositorioEstoque
     {
-        Task<List<Estoque>> getEstoque();
+        Task<IQueryable<Estoque>> getEstoque();
         Task<Estoque> getEstoqueId(int id);
 
         Task<Estoque> addEstoque(Estoque item);
@@ -77,9 +77,9 @@ namespace Business.Repositorios
             return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
         }
 
-        public async Task<List<Estoque>> getEstoque()
+        public async Task<IQueryable<Estoque>> getEstoque()
         {
-            return await _dbContext.Estoque.AsNoTracking().ToListAsync();
+            return _dbContext.Estoque.AsNoTracking();
         }
 
         public async Task<Estoque> getEstoqueId(int id)

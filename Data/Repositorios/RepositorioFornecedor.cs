@@ -14,7 +14,7 @@ namespace Business.Repositorios
 
     public interface IRepositorioFornecedor
     {
-        Task<List<Fornecedor>> getFornecedores();
+        Task<IQueryable<Fornecedor>> getFornecedores();
         Task<Fornecedor> getFornecedorId(int id);
         Task<Fornecedor> addFornecedor(Fornecedor fornecedor);
         Task updateFornecedor(Fornecedor fornecedorVM);
@@ -59,9 +59,9 @@ namespace Business.Repositorios
             }
 
         }
-        public async Task<List<Fornecedor>> getFornecedores()
+        public async Task<IQueryable<Fornecedor>> getFornecedores()
         {
-            return await _dbContext.Fornecedor.AsNoTracking().ToListAsync();
+            return _dbContext.Fornecedor.AsNoTracking();
         }
         public async Task<Fornecedor> getFornecedorId(int id)
         {

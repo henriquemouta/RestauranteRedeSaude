@@ -11,7 +11,7 @@ namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<List<Estoque>> getEstoque();
+        Task<IQueryable<Estoque>> getEstoque();
         Task<Estoque> addEstoque(Estoque item);
         Task updateEstoque(Estoque item);
         Task<bool> estoqueExiste(int id);
@@ -34,9 +34,10 @@ namespace Business.Services
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
 
+            await repositorioEstoque.addEstoque(item);
             await repositorioEstoque.saveChangesAsync();
 
-            return await repositorioEstoque.addEstoque(item);
+            return item;
             
             
 
@@ -54,7 +55,7 @@ namespace Business.Services
             return await repositorioEstoque.estoqueExiste(id);
         }
 
-        public async Task<List<Estoque>> getEstoque()
+        public async Task<IQueryable<Estoque>> getEstoque()
         {
             return await repositorioEstoque.getEstoque();
 

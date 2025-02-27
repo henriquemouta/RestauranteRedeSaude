@@ -11,7 +11,7 @@ namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<List<Funcionario>> getFuncionarios();
+        Task<IQueryable<Funcionario>> getFuncionarios();
         Task<Funcionario> getFuncionarioId(int id);
         Task<Funcionario> addFuncionario(Funcionario funcionario);
         Task updateFuncionar(Funcionario funcionario);
@@ -30,7 +30,8 @@ namespace Business.Services
             if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
             if (string.IsNullOrWhiteSpace(funcionario.nome)) throw new ArgumentException("Nome é obrigatório.", nameof(funcionario));
             await _repositorioFuncionario.saveChangesAsync();
-            return await _repositorioFuncionario.addFuncionario(funcionario);
+            await _repositorioFuncionario.addFuncionario(funcionario);
+            return funcionario;
             
         }
 
@@ -40,7 +41,7 @@ namespace Business.Services
             await _repositorioFuncionario.saveChangesAsync();
         }
 
-        public async Task<List<Funcionario>> getFuncionarios()
+        public async Task<IQueryable<Funcionario>> getFuncionarios()
         {
             return await _repositorioFuncionario.getFuncionarios();
         }

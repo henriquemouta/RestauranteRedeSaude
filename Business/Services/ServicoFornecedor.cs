@@ -10,7 +10,7 @@ namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<List<Fornecedor>> getFornecedores();
+        Task<IQueryable<Fornecedor>> getFornecedores();
         Task<Fornecedor> getFornecedorId(int id);
         Task<Fornecedor> addFornecedor(Fornecedor fornecedor);
         Task updateFornecedor(Fornecedor fornecedor);
@@ -37,8 +37,9 @@ namespace Business.Services
 
             await repositorioFornecedor.saveChangesAsync();
 
-            return await repositorioFornecedor.addFornecedor(fornecedor);
-            
+            await repositorioFornecedor.addFornecedor(fornecedor);
+
+            return fornecedor;
             
         }
 
@@ -47,12 +48,11 @@ namespace Business.Services
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
             
             await repositorioFornecedor.deleteFornecedor(id);
-            
             await repositorioFornecedor.saveChangesAsync();
 
         }
 
-        public async Task<List<Fornecedor>> getFornecedores()
+        public async Task<IQueryable<Fornecedor>> getFornecedores()
         {
             return await repositorioFornecedor.getFornecedores();
         }
@@ -60,9 +60,7 @@ namespace Business.Services
         public async Task<Fornecedor> getFornecedorId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            
             var fornecedor = await repositorioFornecedor.getFornecedorId(id);
-            
             return fornecedor ?? throw new KeyNotFoundException($"Fornecedor com Id {id} não encontrado.");
         }
 
@@ -72,7 +70,6 @@ namespace Business.Services
             if (fornecedor.id <= 0) throw new ArgumentException("Id inválido.", nameof(fornecedor));
            
             await repositorioFornecedor.updateFornecedor(fornecedor);
-            
             await repositorioFornecedor.saveChangesAsync();
 
         }
