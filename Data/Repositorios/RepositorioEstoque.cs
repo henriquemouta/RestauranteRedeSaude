@@ -22,6 +22,8 @@ namespace Business.Repositorios
 
         Task<bool> estoqueExiste(int id);
 
+        Task saveChangesAsync();
+
     }
 
     public class RepositorioEstoque : IRepositorioEstoque
@@ -33,13 +35,16 @@ namespace Business.Repositorios
             _dbContext = dbContext;
         }
 
+        public async Task saveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
 
         public async Task<Estoque> addEstoque(Estoque item)
         {
             try
             {
                 _dbContext.Estoque.Add(item);
-                await _dbContext.SaveChangesAsync();
                 return item;
             }
             catch (Exception e)
@@ -59,7 +64,7 @@ namespace Business.Repositorios
                     throw new KeyNotFoundException("Item não encontrado.");
                 }
                 _dbContext.Estoque.Remove(estoque);
-                await _dbContext.SaveChangesAsync();
+                
             }
             catch (Exception e)
             {
@@ -87,7 +92,7 @@ namespace Business.Repositorios
             try
             {
                 _dbContext.Entry(item).State = EntityState.Modified;
-                await _dbContext.SaveChangesAsync();
+                
             }
             catch (Exception e)
             {

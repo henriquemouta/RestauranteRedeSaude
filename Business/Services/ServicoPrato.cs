@@ -20,41 +20,45 @@ namespace Business.Services
 
     public class ServicoPrato : IServicoPrato
     {
-        private readonly IRepositorioPrato _repositorioPrato;
+        private readonly IRepositorioPrato repositorioPrato;
         public ServicoPrato(IRepositorioPrato repositorioPrato)
         {
-            _repositorioPrato = repositorioPrato ?? throw new ArgumentNullException(nameof(repositorioPrato));
+            this.repositorioPrato = repositorioPrato ?? throw new ArgumentNullException(nameof(repositorioPrato));
         }
         public async Task<List<Prato>> getPratos()
         {
-            return await _repositorioPrato.getPratos(); 
+            return await repositorioPrato.getPratos(); 
         }
 
         public async Task<Prato> getPratoId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            var prato = await _repositorioPrato.getPratoId(id);
+            var prato = await repositorioPrato.getPratoId(id);
             return prato ?? throw new KeyNotFoundException($"Prato com Id {id} não encontrado.");
         }
 
         public async Task deletePrato(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            await _repositorioPrato.deletePrato(id);
+            await repositorioPrato.deletePrato(id);
+            await repositorioPrato.saveChangesAsync();
         }
 
         public async Task<Prato> addPrato(Prato prato)
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));
             if (string.IsNullOrWhiteSpace(prato.nome)) throw new ArgumentException("Nome é obrigatório.", nameof(prato));
-            return await _repositorioPrato.addPrato(prato);
+            await repositorioPrato.saveChangesAsync();
+            return await repositorioPrato.addPrato(prato);
+            
         }
 
         public async Task updatePrato(Prato prato)
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));
             if (prato.id <= 0) throw new ArgumentException("Id inválido.", nameof(prato));
-            await _repositorioPrato.updatePrato(prato);
+            await repositorioPrato.updatePrato(prato);
+            await repositorioPrato.saveChangesAsync();
         }
     }
 }

@@ -18,6 +18,8 @@ namespace Business.Repositorios
         Task<Funcionario> addFuncionario(Funcionario funcionario);
         Task updateFuncionario(Funcionario funcionarioVM);
         Task deleteFuncionario(int id);
+
+        Task saveChangesAsync();
     }
     public class RepositorioFuncionario : IRepositorioFuncionario
     {
@@ -79,6 +81,9 @@ namespace Business.Repositorios
                 throw new Exception(e.Message);
             }
         }
-    
+        public async Task saveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

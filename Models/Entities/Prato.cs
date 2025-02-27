@@ -21,7 +21,7 @@ namespace Models.ViewModels
         }
         public decimal preco { get; set; }
         public string categoria { get; set; }
-        public DateTime dataCriacao { get; set; }
+        public DateTime? dataCriacao { get; set; }
 
     }
 }

@@ -16,6 +16,7 @@ namespace Business.Repositorios
         Task<Prato> addPrato(Prato prato);
         Task updatePrato(Prato prato);
         Task deletePrato(int id);
+        Task saveChangesAsync();
     }
 
     public class RepositorioPrato : IRepositorioPrato
@@ -80,6 +81,11 @@ namespace Business.Repositorios
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public async Task saveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
