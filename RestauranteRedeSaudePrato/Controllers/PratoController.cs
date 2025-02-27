@@ -12,21 +12,21 @@ namespace RestauranteRedeSaudePrato.Controllers
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta>> getPratos()
+        public async Task<ActionResult<ModelodeResposta<List<Prato>>>> getPratos()
         {
             var pratos = await servicoPrato.getPratos();
-            return Ok(new ModelodeResposta { sucesso = true, info = pratos });
+            return Ok(new ModelodeResposta<List<Prato>> { sucesso = true, info = pratos });
         }
 
         [HttpGet("id")]
-        public async Task<ActionResult<ModelodeResposta>> getPratoId(int id)
+        public async Task<ActionResult<ModelodeResposta<Prato>>> getPratoId(int id)
         {
             var prato = await servicoPrato.getPratoId(id);
             if (prato == null)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
+                return Ok(new ModelodeResposta<Prato> { sucesso = false, erro = "um erro aconteceu" });
             }
-            return Ok(new ModelodeResposta { sucesso = true, info = prato });
+            return Ok(new ModelodeResposta<Prato> { sucesso = true, info = prato });
 
         }
 
@@ -34,7 +34,7 @@ namespace RestauranteRedeSaudePrato.Controllers
         public async Task<IActionResult> deletePrato(int id)
         {
             await servicoPrato.deletePrato(id);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<Prato> { sucesso = true });
         }
 
 
@@ -42,7 +42,7 @@ namespace RestauranteRedeSaudePrato.Controllers
         public async Task<ActionResult<Prato>> addPrato(Prato prato)
         {
             await servicoPrato.addPrato(prato);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<Prato> { sucesso = true });
         }
 
         [HttpPut("id")]
@@ -50,10 +50,10 @@ namespace RestauranteRedeSaudePrato.Controllers
         {
             if (id != prato.id)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
+                return Ok(new ModelodeResposta<Prato> { sucesso = false, erro = "um erro aconteceu" });
             }
             await servicoPrato.updatePrato(prato);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<Prato> { sucesso = true });
         }
     }
 }

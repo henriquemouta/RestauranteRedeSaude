@@ -11,35 +11,35 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
     public class FuncionarioController(IServicoFuncionario servicoFuncionario) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta>> getFuncionarios()
+        public async Task<ActionResult<ModelodeResposta<List<Funcionario>>>> getFuncionarios()
         {
             var funcionarios = await servicoFuncionario.getFuncionarios();
-            return Ok(new ModelodeResposta { sucesso = true , info = funcionarios });
+            return Ok(new ModelodeResposta<List<Funcionario>> { sucesso = true , info = funcionarios });
         }
 
         [HttpPost]
         public async Task<ActionResult<Funcionario>> addFuncionario(Funcionario funcionario)
         {
             await servicoFuncionario.addFuncionario(funcionario);
-            return Ok(new ModelodeResposta { sucesso = true});
+            return Ok(new ModelodeResposta<Funcionario> { sucesso = true});
         }
 
         [HttpDelete("id")]
         public async Task<IActionResult> deleteFuncionario(int id)
         {
             await servicoFuncionario.deleteFuncionario(id);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<Funcionario> { sucesso = true });
         }
 
         [HttpGet("id")]
         public async Task<ActionResult<Funcionario>> getFuncionarioId(int id)
         {
-            var funcionario = servicoFuncionario.getFuncionarioId(id);
+            var funcionario = await servicoFuncionario.getFuncionarioId(id);
             if (funcionario == null)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
+                return Ok(new ModelodeResposta<Funcionario> { sucesso = false, erro = "um erro aconteceu" });
             }
-            return Ok(new ModelodeResposta { sucesso = true, info = funcionario });
+            return Ok(new ModelodeResposta<Funcionario> { sucesso = true, info = funcionario });
         }
 
         [HttpPut("id")]
@@ -47,10 +47,10 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         {
             if (id != funcionario.id)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
+                return Ok(new ModelodeResposta<Funcionario> { sucesso = false, erro = "um erro aconteceu" });
             }
             await servicoFuncionario.updateFuncionar(funcionario);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<Funcionario> { sucesso = true });
         }
 
 
