@@ -19,36 +19,65 @@ namespace Business.Repositorios
         Task updateFuncionario(Funcionario funcionarioVM);
         Task deleteFuncionario(int id);
     }
-    public class RepositorioFuncionario(AppDbContext dbContext) : IRepositorioFuncionario
+    public class RepositorioFuncionario : IRepositorioFuncionario
     {
+        private readonly AppDbContext _dbContext;
+        public RepositorioFuncionario(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public async Task<Funcionario> addFuncionario(Funcionario funcionario)
         {
-            dbContext.Funcionario.Add(funcionario);
-            await dbContext.SaveChangesAsync();
-            return funcionario;
+            try
+            {
+                _dbContext.Funcionario.Add(funcionario);
+                await _dbContext.SaveChangesAsync();
+                return funcionario;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task deleteFuncionario(int id)
         {
-            var funcionario = dbContext.Funcionario.FirstOrDefault(n => n.id  == id);
-            dbContext.Remove(funcionario);
-            await dbContext.SaveChangesAsync();
-        }   
-
+            try
+            {
+                var funcionario = await _dbContext.Funcionario.FindAsync(id);
+                if (funcionario == null)
+                {
+                    throw new KeyNotFoundException("Funcionario não encontrado.");
+                }
+                _dbContext.Funcionario.Remove(funcionario);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public async Task<List<Funcionario>> getFuncionarios()
         {
-            return await dbContext.Funcionario.ToListAsync();
+            return await _dbContext.Funcionario.AsNoTracking().ToListAsync();
         }
 
         public async Task<Funcionario> getFuncionarioId(int id)
         {
-            return dbContext.Funcionario.FirstOrDefault(n => n.id == id);
+            return await _dbContext.Funcionario.AsNoTracking().FirstOrDefaultAsync(n => n.id == id);
         }
 
         public async Task updateFuncionario(Funcionario funcionario)
         {
-            dbContext.Entry(funcionario).State = EntityState.Modified;
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Entry(funcionario).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync(); 
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     
     }

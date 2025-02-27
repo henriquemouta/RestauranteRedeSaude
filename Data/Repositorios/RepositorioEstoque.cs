@@ -12,54 +12,87 @@ namespace Business.Repositorios
     public interface IRepositorioEstoque
     {
         Task<List<Estoque>> getEstoque();
+        Task<Estoque> getEstoqueId(int id);
 
         Task<Estoque> addEstoque(Estoque item);
 
         Task updateEstoque(Estoque item);
 
-        Task<bool> estoqueExiste(int id);
-
         Task deleteEstoque(int id);
 
-        Task<Estoque> getEstoqueId(int id);
+        Task<bool> estoqueExiste(int id);
+
     }
 
-    public class RepositorioEstoque(AppDbContext dbContext) : IRepositorioEstoque
+    public class RepositorioEstoque : IRepositorioEstoque
     {
+
+        private readonly AppDbContext _dbContext;
+        public RepositorioEstoque(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+
         public async Task<Estoque> addEstoque(Estoque item)
         {
-           dbContext.Estoque.Add(item);
-           await dbContext.SaveChangesAsync();
-           return item;
+            try
+            {
+                _dbContext.Estoque.Add(item);
+                await _dbContext.SaveChangesAsync();
+                return item;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
            
         }
 
         public async Task deleteEstoque(int id)
         {
-            var estoque = await dbContext.Estoque.FirstOrDefaultAsync(sel => sel.id == id);
-            dbContext.Estoque.Remove(estoque);
-            dbContext.SaveChanges();
+            try
+            {
+                var estoque = await _dbContext.Estoque.FindAsync(id);
+                if (estoque == null)
+                {
+                    throw new KeyNotFoundException("Item não encontrado.");
+                }
+                _dbContext.Estoque.Remove(estoque);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<bool> estoqueExiste(int id)
         {
-            return await dbContext.Estoque.AnyAsync(sel => sel.id == id);
+            return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
         }
 
         public async Task<List<Estoque>> getEstoque()
         {
-            return await dbContext.Estoque.ToListAsync();
+            return await _dbContext.Estoque.AsNoTracking().ToListAsync();
         }
 
         public async Task<Estoque> getEstoqueId(int id)
         {
-            return await dbContext.Estoque.FirstOrDefaultAsync(sel => sel.id == id);
+            return await _dbContext.Estoque.AsNoTracking().FirstOrDefaultAsync(sel => sel.id == id);
         }
 
         public async Task updateEstoque(Estoque item)
         {
-            dbContext.Entry(item).State = EntityState.Modified;
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Entry(item).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

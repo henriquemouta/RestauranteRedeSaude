@@ -8,12 +8,14 @@ namespace Models.ViewModels
 {
     public class Funcionario
     {
-        public int id { get; set; }  
-
-        public string nome { get; set; }  
-
+        public int id { get; set; }
+        private string _nome = string.Empty;
+        public string nome
+        {
+            get => _nome;
+            set => _nome = string.IsNullOrWhiteSpace(value) ? throw new ArgumentException("Nome é obrigatório.") : value;
+        }
         public string cargo { get; set; }  
-
         public string telefone { get; set; }
         public DateTime dataCriacao { get; set; }
     }

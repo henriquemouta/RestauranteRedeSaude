@@ -10,11 +10,20 @@ namespace Models.ViewModels
     {
         public int id { get; set; }  
 
-        public string nome { get; set; }  
-
-        public string cnpj { get; set; }  
-
-        public string telefone { get; set; }
+        private string _nome = string.Empty;   
+        public string nome 
+        { 
+            get => _nome; 
+            set => _nome = string.IsNullOrWhiteSpace(value) ? throw new ArgumentException("Nome é obrigatório.") : value; 
+        }
+        private string _cnpj = string.Empty;
+        public string cnpj
+        {
+            get => _cnpj;
+            set => _cnpj = string.IsNullOrWhiteSpace(value) ? throw new ArgumentException("CNPJ é obrigatório.") : value;
+        }
+ 
+        public string? telefone { get; set; }
         public DateTime dataCriacao { get; set; }
     }
 }

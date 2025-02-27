@@ -11,12 +11,12 @@ namespace RestauranteRedeSaudePrato.Controllers
     [ApiController]
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
-            [HttpGet]
-            public async Task<ActionResult<ModelodeResposta>> getPratos()
-            {
-                var pratos = await servicoPrato.getPratos();
-                return Ok(new ModelodeResposta { sucesso = true, info = pratos });
-            }
+        [HttpGet]
+        public async Task<ActionResult<ModelodeResposta>> getPratos()
+        {
+            var pratos = await servicoPrato.getPratos();
+            return Ok(new ModelodeResposta { sucesso = true, info = pratos });
+        }
 
         [HttpGet("id")]
         public async Task<ActionResult<ModelodeResposta>> getPratoId(int id)

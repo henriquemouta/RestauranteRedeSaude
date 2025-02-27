@@ -20,36 +20,62 @@ namespace Business.Repositorios
         Task updateFornecedor(Fornecedor fornecedorVM);
         Task deleteFornecedor(int id);
     }
-    public class RepositorioFornecedor(AppDbContext dbContext) : IRepositorioFornecedor
+    public class RepositorioFornecedor : IRepositorioFornecedor
     {
-        public async Task<Fornecedor> addFornecedor(Fornecedor fornecedor)
+        private readonly AppDbContext _dbContext;
+        public RepositorioFornecedor(AppDbContext dbContext)
         {
-            dbContext.Fornecedor.Add(fornecedor);
-            await dbContext.SaveChangesAsync();
-            return fornecedor;
+            _dbContext = dbContext;
         }
-
+        public async Task<Fornecedor> addFornecedor(Fornecedor fornecedor)
+        { try
+            {
+                _dbContext.Fornecedor.Add(fornecedor);
+                await _dbContext.SaveChangesAsync();
+                return fornecedor;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public async Task deleteFornecedor(int id)
         {
-            var fornecedor = dbContext.Fornecedor.FirstOrDefault(n => n.id == id);
-            dbContext.Remove(fornecedor);
-            await dbContext.SaveChangesAsync();
-        }
+            try
+            {
+                var fornecedor = await _dbContext.Fornecedor.FindAsync(id);
+                if (fornecedor == null)
+                {
+                    throw new KeyNotFoundException("Fornecedor não encontrado.");
+                }
+                _dbContext.Fornecedor.Remove(fornecedor);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
 
+        }
         public async Task<List<Fornecedor>> getFornecedores()
         {
-            return await dbContext.Fornecedor.ToListAsync();
+            return await _dbContext.Fornecedor.AsNoTracking().ToListAsync();
         }
-
         public async Task<Fornecedor> getFornecedorId(int id)
         {
-            return dbContext.Fornecedor.FirstOrDefault(n => n.id == id);
+            return await _dbContext.Fornecedor.AsNoTracking().FirstOrDefaultAsync(n => n.id == id);
         }
-
         public async Task updateFornecedor(Fornecedor fornecedor)
         {
-            dbContext.Entry(fornecedor).State = EntityState.Modified;
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                _dbContext.Entry(fornecedor).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }
