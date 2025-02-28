@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using Models.ViewModels;
+using ViewsModels.ViewsModels.Fornecedor;
 
 namespace RestauranteRedeSaudeFornecedores.Controller
 {
@@ -11,40 +12,40 @@ namespace RestauranteRedeSaudeFornecedores.Controller
     public class FornecedorController(IServicoFornecedor servicoFornecedor) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta>> getFornecedores()
+        public async Task<ActionResult<ModelodeResposta<IQueryable<FornecedorVM>>>> getFornecedores()
         {
             var fornecedores = await servicoFornecedor.getFornecedores();
-            return Ok(new ModelodeResposta { sucesso = true, info = fornecedores });
+            return Ok(new ModelodeResposta<IQueryable<FornecedorVM>> { sucesso = true, info = fornecedores });
         }
 
         [HttpGet("id")]
-        public async Task<ActionResult<Fornecedor>> getFornecedorId(int id)
+        public async Task<ActionResult<FornecedorVM>> getFornecedorId(int id)
         {
-            var fornecedor = servicoFornecedor.getFornecedorId(id);
+            var fornecedor = await servicoFornecedor.getFornecedorId(id);
             if (fornecedor == null)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
+                return Ok(new ModelodeResposta<FornecedorVM> { sucesso = false, erro = "um erro aconteceu" });
             }
-            return Ok(new ModelodeResposta { sucesso = true, info = fornecedor });
+            return Ok(new ModelodeResposta<FornecedorVM> { sucesso = true, info = fornecedor });
         }
 
         [HttpPost]
-        public async Task<ActionResult<Fornecedor>> addFornecedor(Fornecedor fornecedor)
+        public async Task<ActionResult<FornecedorIncluirVM>> addFornecedor(FornecedorIncluirVM fornecedor)
         {
             await servicoFornecedor.addFornecedor(fornecedor);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<FornecedorIncluirVM> { sucesso = true });
         }
 
         [HttpPut("id")]
-        public async Task<IActionResult> updateFornecedor(int id, Fornecedor fornecedor)
+        public async Task<ActionResult<ModelodeResposta<FornecedorUpdateVM>>> updateFornecedor(int id, FornecedorUpdateVM fornecedor)
         {
             if (id != fornecedor.id)
             {
-                return Ok(new ModelodeResposta { sucesso = false, erro = "um erro aconteceu" });
+                return Ok(new ModelodeResposta<Fornecedor> { sucesso = false, erro = "um erro aconteceu" });
             }
 
             await servicoFornecedor.updateFornecedor(fornecedor);
-            return Ok(new ModelodeResposta { sucesso = true });
+            return Ok(new ModelodeResposta<Fornecedor> { sucesso = true });
 
         }
 
@@ -53,7 +54,7 @@ namespace RestauranteRedeSaudeFornecedores.Controller
         public async Task<IActionResult> deleteFornecedor(int id)
         {
             await servicoFornecedor.deleteFornecedor(id);
-            return Ok(new ModelodeResposta { sucesso = true});
+            return Ok(new ModelodeResposta<Fornecedor> { sucesso = true});
         }
     }
 }

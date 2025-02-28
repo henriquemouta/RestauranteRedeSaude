@@ -23,5 +23,8 @@ namespace Models.ViewModels
 
         public string categoria { get; set; }
         public DateTime? dataCriacao { get; set; }
+    
+
+        public Estoque() { }
     }
 }

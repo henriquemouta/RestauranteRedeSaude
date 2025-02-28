@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Prato
+namespace ViewsModels.ViewsModels.Estoque
 {
-    public class PratoVM
+    public class EstoqueUpdateVM
     {
-
         public int id { get; set; }
-
 
         public string nome { get; set; }
 
+        public int quantidade { get; set; }
 
-        public decimal preco { get; set; }
-
+        public decimal precoUnitario { get; set; }
 
         public string categoria { get; set; }
 
-        public PratoVM() { }
+        public EstoqueUpdateVM() { }
     }
 }

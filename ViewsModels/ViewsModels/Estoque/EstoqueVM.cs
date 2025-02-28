@@ -15,5 +15,7 @@ namespace ViewsModels.ViewsModels.Estoque
         public decimal precoUnitario { get; set; }
 
         public string categoria { get; set; }
+
+        public EstoqueVM() { }  
     }
 }
