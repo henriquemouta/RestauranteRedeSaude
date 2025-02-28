@@ -1,9 +1,9 @@
 ﻿using Business.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models.Models;
 using Models.ViewModels;
-using ViewsModels.ViewsModels.Estoque;
+using ViewsModels;
+using ViewsModels.Estoques;
 
 namespace RestauranteRedeSaudeEstoque.Controllers
 {
@@ -12,59 +12,44 @@ namespace RestauranteRedeSaudeEstoque.Controllers
     public class EstoqueController(IServicoEstoque servicoEstoque) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<IQueryable<EstoqueVM>>>> getEstoque()
+        public async Task<ActionResult<ModelodeResposta<List<EstoquesVM>>>> getEstoque()
         {
-            var estoque = await servicoEstoque.getEstoque();
-            return Ok(new ModelodeResposta<IQueryable<EstoqueVM>> { sucesso = true, info = estoque });
+            var estoque = await servicoEstoque.get();
+            return Ok(new ModelodeResposta<List<EstoquesVM>> { sucesso = true, info = estoque });
         }
 
         [HttpPost]
-        public async Task<ActionResult<ModelodeResposta<EstoqueIncluirVM>>> addEstoque(EstoqueIncluirVM item)
+        public async Task<ActionResult<ModelodeResposta<EstoquesIncluirVM>>> addEstoque(EstoquesIncluirVM item)
         {
-            await servicoEstoque.addEstoque(item);
-            return Ok(new ModelodeResposta<EstoqueIncluirVM> { sucesso = true , info = item});
+            await servicoEstoque.add(item);
+            return Ok(new ModelodeResposta<EstoquesIncluirVM> { sucesso = true, info = item });
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ModelodeResposta<EstoqueUpdateVM>>> updateEstoque(int id, EstoqueUpdateVM estoque)
+        public async Task<ActionResult<ModelodeResposta<EstoquesUpdateVM>>> updateEstoque(int id, EstoquesUpdateVM estoque)
         {
-            if (id != estoque.id || !await servicoEstoque.estoqueExiste(id))
-            {
-                return Ok(new ModelodeResposta<EstoqueUpdateVM> { sucesso = false, erro = "ID INVÁLIDO" });
-
-            }
-
-            await servicoEstoque.updateEstoque(estoque);
-            return Ok(new ModelodeResposta<EstoqueUpdateVM> { sucesso = true, info = estoque});
+            await servicoEstoque.update(id, estoque);
+            return Ok(new ModelodeResposta<EstoquesUpdateVM> { sucesso = true, info = estoque });
 
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> deleteEstoque(int id)
         {
-            if (!await servicoEstoque.estoqueExiste(id))
-            {
-                return Ok(new ModelodeResposta<EstoqueVM> { sucesso = false, erro = $"Estoque item {id} NÃO ENCONTRADO" });
-            }
-
-            await servicoEstoque.deleteEstoque(id);
-            return Ok(new ModelodeResposta<EstoqueVM> { sucesso = true });
+            await servicoEstoque.delete(id);
+            return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true });
         }
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ModelodeResposta<EstoqueVM>>> getEstoqueId(int id)
+        public async Task<ActionResult<ModelodeResposta<EstoquesVM>>> getEstoqueId(int id)
         {
-            
-            var estoque = await servicoEstoque.getEstoqueId(id);
-            if (estoque == null)
-            {
-                return Ok(new ModelodeResposta<EstoqueVM> { sucesso = false, erro = "Estoque item não encontrado" });
-            }
-            return Ok(new ModelodeResposta<EstoqueVM> { sucesso = true, info = estoque });
+
+            var estoque = await servicoEstoque.getId(id);
+            return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true, info = estoque });
 
         }
 
-        
+
     }
 }

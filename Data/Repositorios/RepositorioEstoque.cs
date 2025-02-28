@@ -1,5 +1,6 @@
 ﻿using Data.Data;
 using Microsoft.EntityFrameworkCore;
+using Models.Entities;
 using Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,20 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Repositorios
+namespace Data.Repositorios
 {
     public interface IRepositorioEstoque
     {
-        Task<IQueryable<Estoque>> getEstoque();
-        Task<Estoque> getEstoqueId(int id);
+        IQueryable<Estoque> get { get; }
+        //Task<Estoque> getEstoqueId(int id);
 
-        Task<Estoque> addEstoque(Estoque item);
+        void add(Estoque item);
 
-        Task updateEstoque(Estoque item);
+        void update(Estoque item);
 
-        Task deleteEstoque(int id);
+        void delete(Estoque item);
 
-        Task<bool> estoqueExiste(int id);
+        //Task<bool> estoqueExiste(int id);
 
         Task saveChangesAsync();
 
@@ -40,64 +41,56 @@ namespace Business.Repositorios
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Estoque> addEstoque(Estoque item)
+        public void add(Estoque item)
         {
-            try
-            {
-                _dbContext.Estoque.Add(item);
-                return item;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-           
+            _dbContext.Estoque.Add(item);
+
         }
 
-        public async Task deleteEstoque(int id)
+        public void delete(Estoque item)
         {
-            try
-            {
-                var estoque = await _dbContext.Estoque.FindAsync(id);
-                if (estoque == null)
-                {
-                    throw new KeyNotFoundException("Item não encontrado.");
-                }
-                _dbContext.Estoque.Remove(estoque);
-                
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            _dbContext.Estoque.Remove(item);
+            //try
+            //{
+            //    var estoque = await _dbContext.Estoque.FindAsync(id);
+            //    if (estoque == null)
+            //    {
+            //        throw new KeyNotFoundException("Item não encontrado.");
+            //    }
+
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception(e.Message);
+            //}
         }
 
-        public async Task<bool> estoqueExiste(int id)
+        //public async Task<bool> estoqueExiste(int id)
+        //{
+        //    return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
+        //}
+
+        public IQueryable<Estoque> get
         {
-            return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
+            get { return _dbContext.Estoque.AsNoTracking(); }
         }
 
-        public async Task<IQueryable<Estoque>> getEstoque()
-        {
-            return _dbContext.Estoque.AsNoTracking();
-        }
+        //public async Task<Estoque> getEstoqueId(int id)
+        //{
+        //    return await _dbContext.Estoque.AsNoTracking().FirstOrDefaultAsync(sel => sel.id == id);
+        //}
 
-        public async Task<Estoque> getEstoqueId(int id)
+        public void update(Estoque item)
         {
-            return await _dbContext.Estoque.AsNoTracking().FirstOrDefaultAsync(sel => sel.id == id);
-        }
+            _dbContext.Entry(item).State = EntityState.Modified;
+            //try
+            //{
 
-        public async Task updateEstoque(Estoque item)
-        {
-            try
-            {
-                _dbContext.Entry(item).State = EntityState.Modified;
-                
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception(e.Message);
+            //}
         }
     }
 }

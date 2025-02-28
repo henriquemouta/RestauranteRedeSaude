@@ -1,8 +1,8 @@
 ﻿using Business.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models.Models;
 using Models.ViewModels;
+using ViewsModels;
 using ViewsModels.ViewsModels.Fornecedor;
 
 namespace RestauranteRedeSaudeFornecedores.Controller
