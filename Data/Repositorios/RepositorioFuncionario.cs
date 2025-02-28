@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Data.Data;
+using Data;
 using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using Models.ViewModels;

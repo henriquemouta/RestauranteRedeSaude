@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 
-namespace Data.Data
+namespace Data
 {
     public class AppDbContext : DbContext
     {
