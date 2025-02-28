@@ -99,7 +99,7 @@ namespace Business.Services
            
             
 
-            Estoque estoque = new Estoque();
+            Estoque estoque = await repositorioEstoque.getEstoqueId(item.id);
             estoque.id = item.id;
             estoque.nome = item.nome;  
             estoque.categoria = item.categoria;

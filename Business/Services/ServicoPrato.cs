@@ -91,7 +91,7 @@ namespace Business.Services
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));
             if (prato.id <= 0) throw new ArgumentException("Id inválido.", nameof(prato));
-            Prato item = new Prato();
+            Prato item = await repositorioPrato.getPratoId(prato.id);
             item.id = prato.id;
             item.preco = prato.preco;
             item.nome = prato.nome;

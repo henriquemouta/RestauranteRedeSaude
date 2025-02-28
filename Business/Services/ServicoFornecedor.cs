@@ -91,11 +91,13 @@ namespace Business.Services
             if (fornecedor == null) throw new ArgumentNullException(nameof(fornecedor));
             if (fornecedor.id <= 0) throw new ArgumentException("Id inválido.", nameof(fornecedor));
 
-            Fornecedor item = new Fornecedor();
+            Fornecedor item = await repositorioFornecedor.getFornecedorId(fornecedor.id);
+
             item.id = fornecedor.id;
             item.cnpj = fornecedor.cnpj;
             item.telefone = fornecedor.telefone;
             item.nome = fornecedor.nome;
+           
             await repositorioFornecedor.updateFornecedor(item);
             await repositorioFornecedor.saveChangesAsync();
             return fornecedor;

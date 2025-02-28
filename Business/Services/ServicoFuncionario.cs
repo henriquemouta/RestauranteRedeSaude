@@ -78,7 +78,7 @@ namespace Business.Services
         {
             if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
             if (funcionario.id <= 0) throw new ArgumentException("Id inválido.", nameof(funcionario));
-            Funcionario item = new Funcionario();
+            Funcionario item = await _repositorioFuncionario.getFuncionarioId(funcionario.id);
             item.id = funcionario.id;
             item.telefone = funcionario.telefone;
             item.nome = funcionario.nome;
