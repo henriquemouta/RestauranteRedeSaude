@@ -37,6 +37,7 @@ namespace Business.Services
             if (string.IsNullOrWhiteSpace(fornecedor.cnpj)) throw new ArgumentException("CNPJ é obrigatório.", nameof(fornecedor));
             Fornecedor item = new Fornecedor();
             item.id = fornecedor.id;
+            item.nome = fornecedor.nome;
             item.cnpj = fornecedor.cnpj;
             item.telefone = fornecedor.telefone;
             item.dataCriacao = DateTime.Now;
@@ -81,6 +82,7 @@ namespace Business.Services
             fornecedor.nome = item.nome;
             fornecedor.cnpj = item.cnpj;
             fornecedor.telefone = item.telefone;
+            
             return fornecedor ?? throw new KeyNotFoundException($"Fornecedor com Id {id} não encontrado.");
         }
 

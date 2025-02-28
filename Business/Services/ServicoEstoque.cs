@@ -105,6 +105,7 @@ namespace Business.Services
             estoque.categoria = item.categoria;
             estoque.precoUnitario= item.precoUnitario;
 
+
             await repositorioEstoque.updateEstoque(estoque);
             await repositorioEstoque.saveChangesAsync();
             return item;

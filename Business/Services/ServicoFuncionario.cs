@@ -35,6 +35,7 @@ namespace Business.Services
             item.telefone = funcionario.telefone;
             item.nome = funcionario.nome;
             item.cargo = funcionario.cargo;
+            item.dataCriacao = DateTime.Now;
             await _repositorioFuncionario.addFuncionario(item);
             await _repositorioFuncionario.saveChangesAsync();
             return funcionario;

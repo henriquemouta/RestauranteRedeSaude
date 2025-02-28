@@ -79,7 +79,7 @@ namespace Business.Services
             item.preco = prato.preco;
             item.nome = prato.nome;
             item.categoria = prato.categoria;
-
+            item.dataCriacao = DateTime.Now;
 
             await repositorioPrato.addPrato(item);
             await repositorioPrato.saveChangesAsync();
