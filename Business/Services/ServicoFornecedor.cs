@@ -97,7 +97,7 @@ namespace Business.Services
             item.cnpj = fornecedor.cnpj;
             item.telefone = fornecedor.telefone;
             item.nome = fornecedor.nome;
-           
+          
             await repositorioFornecedor.updateFornecedor(item);
             await repositorioFornecedor.saveChangesAsync();
             return fornecedor;

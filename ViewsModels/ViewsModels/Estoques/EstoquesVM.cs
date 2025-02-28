@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Estoque
+namespace ViewsModels.Estoques
 {
-    public class EstoqueIncluirVM
+    public class EstoquesVM
     {
         public int id { get; set; }
 
@@ -16,6 +16,5 @@ namespace ViewsModels.ViewsModels.Estoque
 
         public string categoria { get; set; }
 
-        public EstoqueIncluirVM() { }
     }
 }

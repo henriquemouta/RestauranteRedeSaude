@@ -1,7 +1,10 @@
 ﻿using Business.Repositorios;
 using Data.Data;
+using Data.Repositorios;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Logging;
+using Models.Entities;
 using Models.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,35 +12,33 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using ViewsModels.ViewsModels.Estoque;
+using ViewsModels.Estoques;
 
 namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<IQueryable<EstoqueVM>> getEstoque();
+        Task<List<EstoquesVM>> get();
 
-        Task<EstoqueIncluirVM> addEstoque(EstoqueIncluirVM item);
-        Task<EstoqueUpdateVM> updateEstoque(EstoqueUpdateVM item);
-        Task<bool> estoqueExiste(int id);
-        Task deleteEstoque(int id);
-        Task<EstoqueVM> getEstoqueId(int id);
+        Task<EstoquesIncluirVM> add(EstoquesIncluirVM item);
+        Task<EstoquesUpdateVM> update(int id, EstoquesUpdateVM item);
+        Task<bool> existe(int id);
+        Task delete(int id);
+        Task<EstoquesVM> getId(int id);
     }
 
     public class ServicoEstoque : IServicoEstoque
     {
         private readonly IRepositorioEstoque repositorioEstoque;
 
-
-
         public ServicoEstoque(IRepositorioEstoque repositorioEstoque)
         {
             this.repositorioEstoque = repositorioEstoque ?? throw new ArgumentNullException(nameof(repositorioEstoque));
         }
-        public async Task<EstoqueIncluirVM> addEstoque(EstoqueIncluirVM item)
+        public async Task<EstoquesIncluirVM> add(EstoquesIncluirVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));
+            if (string.IsNullOrWhiteSpace(item.nome)) throw new ArgumentException("Nome é obrigatorio.", nameof(item));//fazer validacao pelo data annotation
 
             Estoque estoque = new Estoque();
             estoque.nome = item.nome;
@@ -46,71 +47,70 @@ namespace Business.Services
             estoque.categoria = item.categoria;
             estoque.precoUnitario = item.precoUnitario;
             estoque.dataCriacao = DateTime.Now;
-            await repositorioEstoque.addEstoque(estoque);
+            repositorioEstoque.add(estoque);
             await repositorioEstoque.saveChangesAsync();
             return item;
         }
 
-        public async Task deleteEstoque(int id)
+        public async Task delete(int id)
         {
-           if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            await repositorioEstoque.deleteEstoque(id);
+            Estoque estoque = await repositorioEstoque.get.FirstOrDefaultAsync(obj => obj.id == id);
+            if (estoque is null) throw new ArgumentException("Id inválido.", nameof(id));
+            repositorioEstoque.delete(estoque);
             await repositorioEstoque.saveChangesAsync();
         }
 
-        public async Task<bool> estoqueExiste(int id)
+        public async Task<bool> existe(int id)
         {
-            return await repositorioEstoque.estoqueExiste(id);
+            return await repositorioEstoque.get.AnyAsync(obj => obj.id == id);
         }
 
-        public async Task<IQueryable<EstoqueVM>> getEstoque()
+        public async Task<List<EstoquesVM>> get()
         {
-            IQueryable<Estoque> estoques = await repositorioEstoque.getEstoque(); 
+            IQueryable<Estoque> estoques = repositorioEstoque.get;
 
-            return estoques.Select(e => new EstoqueVM
+            var lista = await estoques.Select(e => new EstoquesVM
             {
                 id = e.id,
                 nome = e.nome,
                 quantidade = e.quantidade,
                 precoUnitario = e.precoUnitario,
                 categoria = e.categoria,
-            });
+            }).ToListAsync();
+            return lista;
         }
 
 
-        public async Task<EstoqueVM> getEstoqueId(int id)
+        public async Task<EstoquesVM> getId(int id)
         {
-            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            var estoque = await repositorioEstoque.getEstoqueId(id);
-            EstoqueVM item = new EstoqueVM();
+            Estoque estoque = await repositorioEstoque.get.FirstOrDefaultAsync(obj => obj.id == id);
+            if (estoque is null) throw new ArgumentException("Id inválido.", nameof(id));
+            EstoquesVM item = new EstoquesVM();
             item.id = id;
             item.nome = estoque.nome;
             item.quantidade = estoque.quantidade;
             item.categoria = estoque.categoria;
             item.precoUnitario = estoque.precoUnitario;
-            
-            return item ?? throw new KeyNotFoundException($"Estoque com Id {id} não encontrado.");
+
+            return item;
         }
 
-        public async Task<EstoqueUpdateVM> updateEstoque(EstoqueUpdateVM item)
+        public async Task<EstoquesUpdateVM> update(int id, EstoquesUpdateVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            if (item.id <= 0) throw new ArgumentException("Id inválido.", nameof(item));
-           
-            
+            Estoque estoque = await repositorioEstoque.get.FirstOrDefaultAsync(obj => obj.id == id);
+            if (estoque is null) throw new ArgumentException("Id inválido.", nameof(id));
 
-            Estoque estoque = await repositorioEstoque.getEstoqueId(item.id);
-            estoque.id = item.id;
-            estoque.nome = item.nome;  
+            estoque.nome = item.nome;
             estoque.categoria = item.categoria;
-            estoque.precoUnitario= item.precoUnitario;
+            estoque.precoUnitario = item.precoUnitario;
 
 
-            await repositorioEstoque.updateEstoque(estoque);
+            repositorioEstoque.update(estoque);
             await repositorioEstoque.saveChangesAsync();
             return item;
         }
 
-        
+
     }
 }

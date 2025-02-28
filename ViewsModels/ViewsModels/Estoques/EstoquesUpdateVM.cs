@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Estoque
+namespace ViewsModels.Estoques
 {
-    public class EstoqueVM
+    public class EstoquesUpdateVM
     {
-        public int id { get; set; }
-
         public string nome { get; set; }
 
         public int quantidade { get; set; }
@@ -16,6 +14,5 @@ namespace ViewsModels.ViewsModels.Estoque
 
         public string categoria { get; set; }
 
-        public EstoqueVM() { }  
     }
 }
