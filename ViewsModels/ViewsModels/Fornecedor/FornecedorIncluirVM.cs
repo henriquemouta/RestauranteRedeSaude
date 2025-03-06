@@ -13,6 +13,6 @@ namespace ViewsModels.ViewsModels.Fornecedor
         public string cnpj { get; set; }
 
         public string telefone { get; set; }
-        public FornecedorIncluirVM() { }
+
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Business.Repositorios;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +13,10 @@ namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<IQueryable<FornecedorVM>> getFornecedores();
+        Task<List<FornecedorVM>> getFornecedores();
         Task<FornecedorVM> getFornecedorId(int id);
         Task<FornecedorIncluirVM> addFornecedor(FornecedorIncluirVM fornecedor);
-        Task<FornecedorUpdateVM> updateFornecedor(FornecedorUpdateVM fornecedor);
+        Task<FornecedorUpdateVM> updateFornecedor(int id, FornecedorUpdateVM fornecedor);
         Task deleteFornecedor(int id);
 
 
@@ -42,41 +44,42 @@ namespace Business.Services
             item.telefone = fornecedor.telefone;
             item.dataCriacao = DateTime.Now;
 
+           
+
+            repositorioFornecedor.add(item);
             await repositorioFornecedor.saveChangesAsync();
-
-            await repositorioFornecedor.addFornecedor(item);
-
             return fornecedor;
             
         }
 
         public async Task deleteFornecedor(int id)
         {
+            Fornecedor fornecedor = await repositorioFornecedor.get.FirstOrDefaultAsync(obj => obj.id == id);
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            
-            await repositorioFornecedor.deleteFornecedor(id);
+            repositorioFornecedor.delete(fornecedor);
             await repositorioFornecedor.saveChangesAsync();
 
         }
 
-        public async Task<IQueryable<FornecedorVM>> getFornecedores()
+        public async Task<List<FornecedorVM>> getFornecedores()
         {
-            IQueryable<Fornecedor> estoques = await repositorioFornecedor.getFornecedores(); 
+            IQueryable<Fornecedor> fornecedors = repositorioFornecedor.get;
 
-            return estoques.Select(e => new FornecedorVM
+            var lista = await fornecedors.Select(e => new FornecedorVM
             {
                 id = e.id,
                 nome = e.nome,
                 cnpj = e.cnpj,
                 telefone = e.telefone,
 
-            });
+            }).ToListAsync();
+            return lista;
         }
 
         public async Task<FornecedorVM> getFornecedorId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            var item = await repositorioFornecedor.getFornecedorId(id);
+            var item = await repositorioFornecedor.get.FirstOrDefaultAsync(obj => obj.id == id);
             FornecedorVM fornecedor = new FornecedorVM();
             fornecedor.id = item.id;
             fornecedor.nome = item.nome;
@@ -86,19 +89,19 @@ namespace Business.Services
             return fornecedor ?? throw new KeyNotFoundException($"Fornecedor com Id {id} não encontrado.");
         }
 
-        public async Task<FornecedorUpdateVM> updateFornecedor(FornecedorUpdateVM fornecedor)
+        public async Task<FornecedorUpdateVM> updateFornecedor(int id, FornecedorUpdateVM fornecedor)
         {
             if (fornecedor == null) throw new ArgumentNullException(nameof(fornecedor));
-            if (fornecedor.id <= 0) throw new ArgumentException("Id inválido.", nameof(fornecedor));
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(fornecedor));
 
-            Fornecedor item = await repositorioFornecedor.getFornecedorId(fornecedor.id);
+            Fornecedor item = await repositorioFornecedor.get.FirstOrDefaultAsync(obj => obj.id == id);
 
-            item.id = fornecedor.id;
+
             item.cnpj = fornecedor.cnpj;
             item.telefone = fornecedor.telefone;
             item.nome = fornecedor.nome;
           
-            await repositorioFornecedor.updateFornecedor(item);
+            repositorioFornecedor.update(item);
             await repositorioFornecedor.saveChangesAsync();
             return fornecedor;
 

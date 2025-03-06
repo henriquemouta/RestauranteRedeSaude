@@ -18,6 +18,6 @@ namespace ViewsModels.ViewsModels.Prato
 
         public string categoria { get; set; }
 
-        public PratoVM() { }
+
     }
 }

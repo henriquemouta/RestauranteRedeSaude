@@ -13,6 +13,6 @@ namespace ViewsModels.ViewsModels.Funcionario
         public string cargo { get; set; }
 
         public string telefone { get; set; }
-        public FuncionarioVM() { }
+        
     }
 }
