@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels;
 using ViewsModels;
+using ViewsModels.Estoques;
 using ViewsModels.ViewsModels.Fornecedor;
 
 namespace RestauranteRedeSaudeFornecedores.Controller
@@ -12,49 +13,83 @@ namespace RestauranteRedeSaudeFornecedores.Controller
     public class FornecedorController(IServicoFornecedor servicoFornecedor) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<IQueryable<FornecedorVM>>>> getFornecedores()
+        public async Task<ActionResult<ModelodeResposta<IQueryable<FornecedorVM>>>> get()
         {
-            var fornecedores = await servicoFornecedor.getFornecedores();
-            return Ok(new ModelodeResposta<IQueryable<FornecedorVM>> { sucesso = true, info = fornecedores });
-        }
-
-        [HttpGet("id")]
-        public async Task<ActionResult<FornecedorVM>> getFornecedorId(int id)
-        {
-            var fornecedor = await servicoFornecedor.getFornecedorId(id);
-            if (fornecedor == null)
+            try
             {
-                return Ok(new ModelodeResposta<FornecedorVM> { sucesso = false, erro = "um erro aconteceu" });
+                var fornecedores = await servicoFornecedor.get();
+                return Ok(new ModelodeResposta<List<FornecedorVM>> { sucesso = true, info = fornecedores });
             }
-            return Ok(new ModelodeResposta<FornecedorVM> { sucesso = true, info = fornecedor });
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult<FornecedorIncluirVM>> addFornecedor(FornecedorIncluirVM fornecedor)
+        public async Task<ActionResult<ModelodeResposta<FornecedorIncluirVM>>> add([FromBody] FornecedorIncluirVM item)
         {
-            await servicoFornecedor.addFornecedor(fornecedor);
-            return Ok(new ModelodeResposta<FornecedorIncluirVM> { sucesso = true });
+            try
+            {
+                if (item == null)
+                {
+                    return BadRequest(new ModelodeResposta<FornecedorIncluirVM> { sucesso = false, erro = "Item inválido" });
+                }
+                await servicoFornecedor.add(item);
+                return Ok(new ModelodeResposta<FornecedorIncluirVM> { sucesso = true, info = item });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        [HttpPut("id")]
-        public async Task<ActionResult<ModelodeResposta<FornecedorUpdateVM>>> updateFornecedor(int id, FornecedorUpdateVM fornecedor)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ModelodeResposta<FornecedorUpdateVM>>> update(int id, [FromBody] FornecedorUpdateVM fornecedor)
         {
-            if (id != fornecedor.id)
+            try
             {
-                return Ok(new ModelodeResposta<Fornecedor> { sucesso = false, erro = "um erro aconteceu" });
+                if (id > 0 && fornecedor != null)
+                {
+                    await servicoFornecedor.update(id, fornecedor);
+                }
+                return Ok(new ModelodeResposta<FornecedorUpdateVM> { sucesso = true, info = fornecedor });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> delete(int id)
+        {
+            try
+            {
+                await servicoFornecedor.delete(id);
+                return Ok(new ModelodeResposta<FornecedorVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ModelodeResposta<FornecedorVM>>> getId(int id)
+        {
+            try
+            {
+                var estoque = await servicoFornecedor.getId(id);
+                return Ok(new ModelodeResposta<FornecedorVM> { sucesso = true, info = estoque });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
-            await servicoFornecedor.updateFornecedor(fornecedor);
-            return Ok(new ModelodeResposta<Fornecedor> { sucesso = true });
-
-        }
-
-
-        [HttpDelete("id")]
-        public async Task<IActionResult> deleteFornecedor(int id)
-        {
-            await servicoFornecedor.deleteFornecedor(id);
-            return Ok(new ModelodeResposta<Fornecedor> { sucesso = true});
         }
     }
 }

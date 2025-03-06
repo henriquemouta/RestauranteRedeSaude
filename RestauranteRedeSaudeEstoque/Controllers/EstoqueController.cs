@@ -1,6 +1,7 @@
 ﻿using Business.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 using ViewsModels;
 using ViewsModels.Estoques;
@@ -9,47 +10,86 @@ namespace RestauranteRedeSaudeEstoque.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EstoqueController(IServicoEstoque servicoEstoque) : ControllerBase
+    public class EstoqueController(IServicoEstoque servicoEstoques) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<EstoquesVM>>>> getEstoque()
+        public async Task<ActionResult<ModelodeResposta<List<EstoquesVM>>>> get()
         {
-            var estoque = await servicoEstoque.get();
-            return Ok(new ModelodeResposta<List<EstoquesVM>> { sucesso = true, info = estoque });
+            try
+            {
+                var estoque = await servicoEstoques.get();
+                return Ok(new ModelodeResposta<List<EstoquesVM>> { sucesso = true, info = estoque });
+            }
+            catch (Exception ex)
+            {
+               throw new Exception(ex.Message);
+            }
+          
         }
 
         [HttpPost]
-        public async Task<ActionResult<ModelodeResposta<EstoquesIncluirVM>>> addEstoque(EstoquesIncluirVM item)
+        public async Task<ActionResult<ModelodeResposta<EstoquesIncluirVM>>> add([FromBody] EstoquesIncluirVM item)
         {
-            await servicoEstoque.add(item);
-            return Ok(new ModelodeResposta<EstoquesIncluirVM> { sucesso = true, info = item });
+            try
+            {
+                if (item == null)
+                {
+                    return BadRequest(new ModelodeResposta<EstoquesIncluirVM> { sucesso = false, erro = "Item inválido" });
+                }
+                await servicoEstoques.add(item);
+                return Ok(new ModelodeResposta<EstoquesIncluirVM> { sucesso = true, info = item });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ModelodeResposta<EstoquesUpdateVM>>> updateEstoque(int id, EstoquesUpdateVM estoque)
+        public async Task<ActionResult<ModelodeResposta<EstoquesUpdateVM>>> update(int id, [FromBody] EstoquesUpdateVM estoque)
         {
-            await servicoEstoque.update(id, estoque);
-            return Ok(new ModelodeResposta<EstoquesUpdateVM> { sucesso = true, info = estoque });
-
+            try
+            {
+                if (id > 0 && estoque != null)
+                {
+                    await servicoEstoques.update(id, estoque);
+                }
+                return Ok(new ModelodeResposta<EstoquesUpdateVM> { sucesso = true, info = estoque });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> deleteEstoque(int id)
+        public async Task<IActionResult> delete(int id)
         {
-            await servicoEstoque.delete(id);
-            return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true });
+            try
+            {
+                await servicoEstoques.delete(id);
+                return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ModelodeResposta<EstoquesVM>>> getEstoqueId(int id)
+        public async Task<ActionResult<ModelodeResposta<EstoquesVM>>> getId(int id)
         {
-
-            var estoque = await servicoEstoque.getId(id);
-            return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true, info = estoque });
-
+            try
+            {
+                var estoque = await servicoEstoques.getId(id);
+                return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true, info = estoque });
+            }
+            catch (Exception ex) 
+            { 
+                throw new Exception( ex.Message);
+            }
+            
         }
-
 
     }
 }
