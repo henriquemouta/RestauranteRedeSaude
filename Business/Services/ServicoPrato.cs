@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.IdentityModel.Logging;
-using Models.ViewModels;
+using Models;
+using Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
