@@ -12,10 +12,10 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
     public class FuncionarioController(IServicoFuncionario servicoFuncionario) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<IQueryable<FuncionarioVM>>>> getFuncionarios()
+        public async Task<ActionResult<ModelodeResposta<List<FuncionarioVM>>>> getFuncionarios()
         {
             var funcionarios = await servicoFuncionario.getFuncionarios();
-            return Ok(new ModelodeResposta<IQueryable<FuncionarioVM>> { sucesso = true , info = funcionarios });
+            return Ok(new ModelodeResposta<List<FuncionarioVM>> { sucesso = true , info = funcionarios });
         }
 
         [HttpPost]
@@ -46,11 +46,8 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
         [HttpPut("id")]
         public async Task<ActionResult<ModelodeResposta<FuncionarioUpdateVM>>> updateFuncionario(int id, FuncionarioUpdateVM funcionario)
         {
-            if (id != funcionario.id)
-            {
-                return Ok(new ModelodeResposta<FuncionarioUpdateVM> { sucesso = false, erro = "um erro aconteceu" });
-            }
-            await servicoFuncionario.updateFuncionar(funcionario);
+
+            await servicoFuncionario.updateFuncionar(id, funcionario);
             return Ok(new ModelodeResposta<FuncionarioUpdateVM> { sucesso = true });
         }
 

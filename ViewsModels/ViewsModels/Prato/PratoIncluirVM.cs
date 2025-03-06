@@ -6,9 +6,7 @@ namespace ViewsModels.ViewsModels.Prato
 {
     public class PratoIncluirVM
     {
-        public int id { get; set; }
-
-
+        public int id {  get; set; }
         public string nome { get; set; }
 
 
@@ -17,6 +15,6 @@ namespace ViewsModels.ViewsModels.Prato
 
         public string categoria { get; set; }
 
-        public PratoIncluirVM() { }
+
     }
 }

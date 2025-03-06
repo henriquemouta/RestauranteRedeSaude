@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Repositorios;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Models.Entities;
 using Models.ViewModels;
 using ViewsModels.ViewsModels.Funcionario;
 
@@ -12,10 +14,10 @@ namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<IQueryable<FuncionarioVM>> getFuncionarios();
+        Task<List<FuncionarioVM>> getFuncionarios();
         Task<FuncionarioVM> getFuncionarioId(int id);
         Task<FuncionarioIncluirVM> addFuncionario(FuncionarioIncluirVM funcionario);
-        Task<FuncionarioUpdateVM> updateFuncionar(FuncionarioUpdateVM funcionario);
+        Task<FuncionarioUpdateVM> updateFuncionar(int id, FuncionarioUpdateVM funcionario);
         Task deleteFuncionario(int id);
     }
 
@@ -36,7 +38,7 @@ namespace Business.Services
             item.nome = funcionario.nome;
             item.cargo = funcionario.cargo;
             item.dataCriacao = DateTime.Now;
-            await _repositorioFuncionario.addFuncionario(item);
+            _repositorioFuncionario.add(item);
             await _repositorioFuncionario.saveChangesAsync();
             return funcionario;
             
@@ -44,27 +46,30 @@ namespace Business.Services
 
         public async Task deleteFuncionario(int id)
         {
+            Funcionario funcionario = await _repositorioFuncionario.get.FirstOrDefaultAsync(obj => obj.id == id);
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
+            _repositorioFuncionario.delete(funcionario);
             await _repositorioFuncionario.saveChangesAsync();
         }
 
-        public async Task<IQueryable<FuncionarioVM>> getFuncionarios()
+        public async Task<List<FuncionarioVM>> getFuncionarios()
         {
-            var funcionarios = await _repositorioFuncionario.getFuncionarios();
-            return funcionarios.Select(e => new FuncionarioVM
+            IQueryable<Funcionario> funcionarios = _repositorioFuncionario.get;
+            var lista = await funcionarios.Select(e => new FuncionarioVM
             {
                 id = e.id,
                 nome = e.nome,
                 cargo = e.cargo,
                 telefone = e.telefone,
 
-            });
+            }).ToListAsync();
+            return lista;
         }
 
         public async Task<FuncionarioVM> getFuncionarioId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
-            var funcionario = await _repositorioFuncionario.getFuncionarioId(id);
+            var funcionario = await _repositorioFuncionario.get.FirstOrDefaultAsync(obj => obj.id == id); ;
             FuncionarioVM item = new FuncionarioVM();
             item.id = funcionario.id;
             item.telefone = funcionario.telefone;
@@ -74,16 +79,15 @@ namespace Business.Services
             
         }
 
-        public async Task<FuncionarioUpdateVM> updateFuncionar(FuncionarioUpdateVM funcionario)
+        public async Task<FuncionarioUpdateVM> updateFuncionar(int id, FuncionarioUpdateVM funcionario)
         {
             if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
-            if (funcionario.id <= 0) throw new ArgumentException("Id inválido.", nameof(funcionario));
-            Funcionario item = await _repositorioFuncionario.getFuncionarioId(funcionario.id);
-            item.id = funcionario.id;
+            if (id <= 0) throw new ArgumentException("Id inválido.", nameof(funcionario));
+            Funcionario item = await _repositorioFuncionario.get.FirstOrDefaultAsync(obj => obj.id == id);
             item.telefone = funcionario.telefone;
             item.nome = funcionario.nome;
             item.cargo = funcionario.cargo;
-            await _repositorioFuncionario.updateFuncionario(item);
+            _repositorioFuncionario.update(item);
             await _repositorioFuncionario.saveChangesAsync();
             return funcionario;
         }

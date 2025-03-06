@@ -13,10 +13,10 @@ namespace RestauranteRedeSaudePrato.Controllers
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<IQueryable<PratoVM>>>> getPratos()
+        public async Task<ActionResult<ModelodeResposta<List<PratoVM>>>> getPratos()
         {
             var pratos = await servicoPrato.getPratos();
-            return Ok(new ModelodeResposta<IQueryable<PratoVM>> { sucesso = true, info = pratos });
+            return Ok(new ModelodeResposta<List<PratoVM>> { sucesso = true, info = pratos });
         }
 
         [HttpGet("id")]
@@ -49,11 +49,8 @@ namespace RestauranteRedeSaudePrato.Controllers
         [HttpPut("id")]
         public async Task<ActionResult<PratoUpdateVM>> updatePrato(int id, PratoUpdateVM prato)
         {
-            if (id != prato.id)
-            {
-                return Ok(new ModelodeResposta<PratoUpdateVM> { sucesso = false, erro = "um erro aconteceu" });
-            }
-            await servicoPrato.updatePrato(prato);
+
+            await servicoPrato.updatePrato(id, prato);
             return Ok(new ModelodeResposta<PratoUpdateVM> { sucesso = true , info = prato});
         }
     }
