@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Data;
 using Microsoft.EntityFrameworkCore;
-using Models.ViewModels;
+using Models;
+using Models.Entities;
 
 namespace Business.Repositorios
 {

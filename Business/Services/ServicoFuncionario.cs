@@ -7,7 +7,7 @@ using Business.Repositorios;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Models.Entities;
-using Models.ViewModels;
+using Models;
 using ViewsModels.Funcionario;
 
 namespace Business.Services

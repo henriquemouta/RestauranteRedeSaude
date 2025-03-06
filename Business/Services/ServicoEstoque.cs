@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Logging;
 using Models.Entities;
-using Models.ViewModels;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
