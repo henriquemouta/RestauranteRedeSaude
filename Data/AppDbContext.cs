@@ -23,7 +23,6 @@ namespace Data
 
         public DbSet<Funcionario> Funcionario { get; set; }
 
-
     }
 
 }

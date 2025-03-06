@@ -1,5 +1,5 @@
 ﻿using Business.Repositorios;
-using Data.Data;
+using Data;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Logging;
 using Models.ViewModels;
