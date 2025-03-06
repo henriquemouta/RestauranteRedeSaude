@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Fornecedor
+namespace ViewsModels.Fornecedor
 {
     public class FornecedorIncluirVM
     {
@@ -13,6 +13,6 @@ namespace ViewsModels.ViewsModels.Fornecedor
         public string cnpj { get; set; }
 
         public string telefone { get; set; }
-        public FornecedorIncluirVM() { }
+
     }
 }

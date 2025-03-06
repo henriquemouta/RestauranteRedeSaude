@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Funcionario
+namespace ViewsModels.Funcionario
 {
-    public class FuncionarioUpdateVM
+    public class FuncionarioIncluirVM
     {
         public int id { get; set; }
 
@@ -13,6 +13,6 @@ namespace ViewsModels.ViewsModels.Funcionario
         public string cargo { get; set; }
 
         public string telefone { get; set; }
-        public FuncionarioUpdateVM() { }
+        public FuncionarioIncluirVM() { }
     }
 }

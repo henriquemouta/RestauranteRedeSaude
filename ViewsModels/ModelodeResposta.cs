@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Models
+namespace ViewsModels
 {
     public class ModelodeResposta<T>
     {
@@ -13,4 +13,4 @@ namespace Models.Models
         public T? info { get; set; }
     }
 
-} 
+}

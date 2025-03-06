@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Prato
+namespace ViewsModels.Prato
 {
     public class PratoVM
     {
@@ -18,6 +18,6 @@ namespace ViewsModels.ViewsModels.Prato
 
         public string categoria { get; set; }
 
-        public PratoVM() { }
+
     }
 }

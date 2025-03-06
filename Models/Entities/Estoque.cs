@@ -5,15 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ViewModels
+namespace Models.Entities
 {
     public class Estoque
     {
         public int id { get; set; }
 
-        [Required(ErrorMessage = "O nome é obrigatório.")]
-        [StringLength(100, MinimumLength = 2, ErrorMessage = "O nome deve ter entre 2 e 100 caracteres.")]
-        public string nome { get; set; } = string.Empty;
+        private string _nome = string.Empty;
+        public string nome
+        {
+            get => _nome;
+            set => _nome = string.IsNullOrWhiteSpace(value) ? throw new ArgumentException("Nome é obrigatório.") : value;
+        }
 
         public int quantidade { get; set; }  
 

@@ -1,70 +1,95 @@
 ﻿using Business.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models.Models;
-using Models.ViewModels;
-using ViewsModels.ViewsModels.Estoque;
+using Microsoft.EntityFrameworkCore;
+using Models;
+using ViewsModels;
+using ViewsModels.Estoques;
 
 namespace RestauranteRedeSaudeEstoque.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EstoqueController(IServicoEstoque servicoEstoque) : ControllerBase
+    public class EstoqueController(IServicoEstoque servicoEstoques) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<IQueryable<EstoqueVM>>>> getEstoque()
+        public async Task<ActionResult<ModelodeResposta<List<EstoquesVM>>>> get()
         {
-            var estoque = await servicoEstoque.getEstoque();
-            return Ok(new ModelodeResposta<IQueryable<EstoqueVM>> { sucesso = true, info = estoque });
+            try
+            {
+                var estoque = await servicoEstoques.get();
+                return Ok(new ModelodeResposta<List<EstoquesVM>> { sucesso = true, info = estoque });
+            }
+            catch (Exception ex)
+            {
+               throw new Exception(ex.Message);
+            }
+          
         }
 
         [HttpPost]
-        public async Task<ActionResult<ModelodeResposta<EstoqueIncluirVM>>> addEstoque(EstoqueIncluirVM item)
+        public async Task<ActionResult<ModelodeResposta<EstoquesIncluirVM>>> add([FromBody] EstoquesIncluirVM item)
         {
-            await servicoEstoque.addEstoque(item);
-            return Ok(new ModelodeResposta<EstoqueIncluirVM> { sucesso = true , info = item});
+            try
+            {
+                if (item == null)
+                {
+                    return BadRequest(new ModelodeResposta<EstoquesIncluirVM> { sucesso = false, erro = "Item inválido" });
+                }
+                await servicoEstoques.add(item);
+                return Ok(new ModelodeResposta<EstoquesIncluirVM> { sucesso = true, info = item });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ModelodeResposta<EstoqueUpdateVM>>> updateEstoque(int id, EstoqueUpdateVM estoque)
+        public async Task<ActionResult<ModelodeResposta<EstoquesUpdateVM>>> update(int id, [FromBody] EstoquesUpdateVM estoque)
         {
-            if (id != estoque.id || !await servicoEstoque.estoqueExiste(id))
+            try
             {
-                return Ok(new ModelodeResposta<EstoqueUpdateVM> { sucesso = false, erro = "ID INVÁLIDO" });
-
+                if (id > 0 && estoque != null)
+                {
+                    await servicoEstoques.update(id, estoque);
+                }
+                return Ok(new ModelodeResposta<EstoquesUpdateVM> { sucesso = true, info = estoque });
             }
-
-            await servicoEstoque.updateEstoque(estoque);
-            return Ok(new ModelodeResposta<EstoqueUpdateVM> { sucesso = true, info = estoque});
-
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> deleteEstoque(int id)
+        public async Task<IActionResult> delete(int id)
         {
-            if (!await servicoEstoque.estoqueExiste(id))
+            try
             {
-                return Ok(new ModelodeResposta<EstoqueVM> { sucesso = false, erro = $"Estoque item {id} NÃO ENCONTRADO" });
+                await servicoEstoques.delete(id);
+                return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true });
             }
-
-            await servicoEstoque.deleteEstoque(id);
-            return Ok(new ModelodeResposta<EstoqueVM> { sucesso = true });
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ModelodeResposta<EstoqueVM>>> getEstoqueId(int id)
+        public async Task<ActionResult<ModelodeResposta<EstoquesVM>>> getId(int id)
         {
-            
-            var estoque = await servicoEstoque.getEstoqueId(id);
-            if (estoque == null)
+            try
             {
-                return Ok(new ModelodeResposta<EstoqueVM> { sucesso = false, erro = "Estoque item não encontrado" });
+                var estoque = await servicoEstoques.getId(id);
+                return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true, info = estoque });
             }
-            return Ok(new ModelodeResposta<EstoqueVM> { sucesso = true, info = estoque });
-
+            catch (Exception ex) 
+            { 
+                throw new Exception( ex.Message);
+            }
+            
         }
 
-        
     }
 }
