@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using Models.ViewModels;
 using ViewsModels;
+using ViewsModels.Estoques;
 using ViewsModels.ViewsModels.Prato;
 
 namespace RestauranteRedeSaudePrato.Controllers
@@ -13,45 +14,82 @@ namespace RestauranteRedeSaudePrato.Controllers
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<PratoVM>>>> getPratos()
+        public async Task<ActionResult<ModelodeResposta<List<PratoVM>>>> get()
         {
-            var pratos = await servicoPrato.getPratos();
-            return Ok(new ModelodeResposta<List<PratoVM>> { sucesso = true, info = pratos });
-        }
-
-        [HttpGet("id")]
-        public async Task<ActionResult<ModelodeResposta<PratoVM>>> getPratoId(int id)
-        {
-            var prato = await servicoPrato.getPratoId(id);
-            if (prato == null)
+            try
             {
-                return Ok(new ModelodeResposta<PratoVM> { sucesso = false, erro = "um erro aconteceu" });
+                var estoque = await servicoPrato.get();
+                return Ok(new ModelodeResposta<List<PratoVM>> { sucesso = true, info = estoque });
             }
-            return Ok(new ModelodeResposta<PratoVM> { sucesso = true, info = prato });
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
         }
-
-        [HttpDelete("id")]
-        public async Task<IActionResult> deletePrato(int id)
-        {
-            await servicoPrato.deletePrato(id);
-            return Ok(new ModelodeResposta<Prato> { sucesso = true });
-        }
-
-
         [HttpPost]
-        public async Task<ActionResult<PratoIncluirVM>> addPrato(PratoIncluirVM prato)
+        public async Task<ActionResult<ModelodeResposta<PratoIncluirVM>>> add([FromBody] PratoIncluirVM item)
         {
-            await servicoPrato.addPrato(prato);
-            return Ok(new ModelodeResposta<PratoIncluirVM> { sucesso = true , info = prato });
+            try
+            {
+                if (item == null)
+                {
+                    return BadRequest(new ModelodeResposta<PratoIncluirVM> { sucesso = false, erro = "Item inválido" });
+                }
+                await servicoPrato.add(item);
+                return Ok(new ModelodeResposta<PratoIncluirVM> { sucesso = true, info = item });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        [HttpPut("id")]
-        public async Task<ActionResult<PratoUpdateVM>> updatePrato(int id, PratoUpdateVM prato)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ModelodeResposta<PratoUpdateVM>>> update(int id, [FromBody] PratoUpdateVM prato)
         {
+            try
+            {
+                if (id > 0 && prato != null)
+                {
+                    await servicoPrato.update(id, prato);
+                }
+                return Ok(new ModelodeResposta<PratoUpdateVM> { sucesso = true, info = prato });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
-            await servicoPrato.updatePrato(id, prato);
-            return Ok(new ModelodeResposta<PratoUpdateVM> { sucesso = true , info = prato});
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> delete(int id)
+        {
+            try
+            {
+                await servicoPrato.delete(id);
+                return Ok(new ModelodeResposta<PratoVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ModelodeResposta<PratoVM>>> getId(int id)
+        {
+            try
+            {
+                var estoque = await servicoPrato.getId(id);
+                return Ok(new ModelodeResposta<PratoVM> { sucesso = true, info = estoque });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
     }
 }
