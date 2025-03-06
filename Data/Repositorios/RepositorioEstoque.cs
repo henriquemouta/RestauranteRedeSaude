@@ -50,47 +50,22 @@ namespace Data.Repositorios
         public void delete(Estoque item)
         {
             _dbContext.Estoque.Remove(item);
-            //try
-            //{
-            //    var estoque = await _dbContext.Estoque.FindAsync(id);
-            //    if (estoque == null)
-            //    {
-            //        throw new KeyNotFoundException("Item não encontrado.");
-            //    }
-
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception(e.Message);
-            //}
+      
         }
 
-        //public async Task<bool> estoqueExiste(int id)
-        //{
-        //    return await _dbContext.Estoque.AnyAsync(sel => sel.id == id);
-        //}
+      
 
         public IQueryable<Estoque> get
         {
             get { return _dbContext.Estoque.AsNoTracking(); }
         }
 
-        //public async Task<Estoque> getEstoqueId(int id)
-        //{
-        //    return await _dbContext.Estoque.AsNoTracking().FirstOrDefaultAsync(sel => sel.id == id);
-        //}
+     
 
         public void update(Estoque item)
         {
             _dbContext.Entry(item).State = EntityState.Modified;
-            //try
-            //{
-
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception(e.Message);
-            //}
+     
         }
     }
 }
