@@ -8,18 +8,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewsModels.ViewsModels.Fornecedor;
-using ViewsModels.ViewsModels.Prato;
+using ViewsModels.Prato;
+
 
 namespace Business.Services
 {
     public interface IServicoPrato 
     {
-        Task<List<PratoVM>> getPratos();
-        Task<PratoVM> getPratoId(int id);
-        Task<PratoIncluirVM> addPrato(PratoIncluirVM prato);
-        Task<PratoUpdateVM> updatePrato(int id, PratoUpdateVM prato);
-        Task deletePrato(int id);
+        Task<List<PratoVM>> get();
+        Task<PratoVM> getId(int id);
+        Task<PratoIncluirVM> add(PratoIncluirVM prato);
+        Task<PratoUpdateVM> update(int id, PratoUpdateVM prato);
+        Task delete(int id);
     }
 
     public class ServicoPrato : IServicoPrato
@@ -29,7 +29,7 @@ namespace Business.Services
         {
             this.repositorioPrato = repositorioPrato ?? throw new ArgumentNullException(nameof(repositorioPrato));
         }
-        public async Task<List<PratoVM>> getPratos()
+        public async Task<List<PratoVM>> get()
         {
             IQueryable<Prato> pratos = repositorioPrato.get;
             var lista = await pratos.Select(e => new PratoVM
@@ -43,7 +43,7 @@ namespace Business.Services
             return lista;
         }
 
-        public async Task<PratoVM> getPratoId(int id)
+        public async Task<PratoVM> getId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
 
@@ -59,7 +59,7 @@ namespace Business.Services
             return item ?? throw new KeyNotFoundException($"Prato com Id {id} não encontrado.");
         }
 
-        public async Task deletePrato(int id)
+        public async Task delete(int id)
         {
             Prato prato = await repositorioPrato.get.FirstOrDefaultAsync(obj => obj.id == id);
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
@@ -69,7 +69,7 @@ namespace Business.Services
             await repositorioPrato.saveChangesAsync();
         }
 
-        public async Task<PratoIncluirVM> addPrato(PratoIncluirVM prato)
+        public async Task<PratoIncluirVM> add(PratoIncluirVM prato)
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));
 
@@ -89,7 +89,7 @@ namespace Business.Services
             
         }
 
-        public async Task<PratoUpdateVM> updatePrato(int id, PratoUpdateVM prato)
+        public async Task<PratoUpdateVM> update(int id, PratoUpdateVM prato)
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(prato));

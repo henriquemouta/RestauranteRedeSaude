@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Models.Entities;
 using Models.ViewModels;
-using ViewsModels.ViewsModels.Funcionario;
+using ViewsModels.Funcionario;
 
 namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<List<FuncionarioVM>> getFuncionarios();
-        Task<FuncionarioVM> getFuncionarioId(int id);
-        Task<FuncionarioIncluirVM> addFuncionario(FuncionarioIncluirVM funcionario);
-        Task<FuncionarioUpdateVM> updateFuncionar(int id, FuncionarioUpdateVM funcionario);
-        Task deleteFuncionario(int id);
+        Task<List<FuncionarioVM>> get();
+        Task<FuncionarioVM> getId(int id);
+        Task<FuncionarioIncluirVM> add(FuncionarioIncluirVM funcionario);
+        Task<FuncionarioUpdateVM> update(int id, FuncionarioUpdateVM funcionario);
+        Task delete(int id);
     }
 
     public class ServicoFuncionario : IServicoFuncionario
@@ -28,7 +28,7 @@ namespace Business.Services
         {
             _repositorioFuncionario = repositorioFuncionario ?? throw new ArgumentNullException(nameof(repositorioFuncionario));
         }
-        public async Task<FuncionarioIncluirVM> addFuncionario(FuncionarioIncluirVM funcionario)
+        public async Task<FuncionarioIncluirVM> add(FuncionarioIncluirVM funcionario)
         {
             if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
             if (string.IsNullOrWhiteSpace(funcionario.nome)) throw new ArgumentException("Nome é obrigatório.", nameof(funcionario));
@@ -44,7 +44,7 @@ namespace Business.Services
             
         }
 
-        public async Task deleteFuncionario(int id)
+        public async Task delete(int id)
         {
             Funcionario funcionario = await _repositorioFuncionario.get.FirstOrDefaultAsync(obj => obj.id == id);
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
@@ -52,7 +52,7 @@ namespace Business.Services
             await _repositorioFuncionario.saveChangesAsync();
         }
 
-        public async Task<List<FuncionarioVM>> getFuncionarios()
+        public async Task<List<FuncionarioVM>> get()
         {
             IQueryable<Funcionario> funcionarios = _repositorioFuncionario.get;
             var lista = await funcionarios.Select(e => new FuncionarioVM
@@ -66,7 +66,7 @@ namespace Business.Services
             return lista;
         }
 
-        public async Task<FuncionarioVM> getFuncionarioId(int id)
+        public async Task<FuncionarioVM> getId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
             var funcionario = await _repositorioFuncionario.get.FirstOrDefaultAsync(obj => obj.id == id); ;
@@ -79,7 +79,7 @@ namespace Business.Services
             
         }
 
-        public async Task<FuncionarioUpdateVM> updateFuncionar(int id, FuncionarioUpdateVM funcionario)
+        public async Task<FuncionarioUpdateVM> update(int id, FuncionarioUpdateVM funcionario)
         {
             if (funcionario == null) throw new ArgumentNullException(nameof(funcionario));
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(funcionario));

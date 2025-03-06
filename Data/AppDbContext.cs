@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using Models.ViewModels;
 
-namespace Data.Data
+namespace Data
 {
     public class AppDbContext : DbContext
     {

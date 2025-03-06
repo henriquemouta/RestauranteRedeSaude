@@ -1,5 +1,4 @@
 ﻿using Data;
-using Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 using System;

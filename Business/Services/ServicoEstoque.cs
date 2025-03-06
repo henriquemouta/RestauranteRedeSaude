@@ -1,5 +1,5 @@
 ﻿using Business.Repositorios;
-using Data.Data;
+using Data;
 using Data.Repositorios;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;

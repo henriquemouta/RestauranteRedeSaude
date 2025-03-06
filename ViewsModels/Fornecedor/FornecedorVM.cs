@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Funcionario
+namespace ViewsModels.Fornecedor
 {
-    public class FuncionarioVM
+    public class FornecedorVM
     {
         public int id { get; set; }
 
         public string nome { get; set; }
 
-        public string cargo { get; set; }
+        public string cnpj { get; set; }
 
         public string telefone { get; set; }
-        
+
     }
 }

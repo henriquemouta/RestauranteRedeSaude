@@ -1,10 +1,8 @@
 ﻿using Business.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models.ViewModels;
 using ViewsModels;
-using ViewsModels.Estoques;
-using ViewsModels.ViewsModels.Funcionario;
+using ViewsModels.Funcionario;
 
 namespace RestauranteRedeSaudeFuncionarios.Controllers
 {
