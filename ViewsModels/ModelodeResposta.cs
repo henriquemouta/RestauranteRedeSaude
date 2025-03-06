@@ -10,7 +10,7 @@ namespace ViewsModels
     {
         public bool sucesso { get; set; }
         public string erro { get; set; }
-        public T? info { get; set; }
+        public T info { get; set; }
     }
 
 }

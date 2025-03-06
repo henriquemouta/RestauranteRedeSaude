@@ -1,13 +1,6 @@
 ﻿using Business.Repositorios;
 using Microsoft.EntityFrameworkCore;
-using Models;
 using Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ViewsModels.Fornecedor;
 
 namespace Business.Services

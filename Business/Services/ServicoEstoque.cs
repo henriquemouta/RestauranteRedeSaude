@@ -1,5 +1,5 @@
 ﻿using Business.Repositorios;
-using Data.Data;
+using Data;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.IdentityModel.Logging;
 using Models.Entities;
@@ -11,6 +11,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using ViewsModels.Estoques;
+using Microsoft.EntityFrameworkCore;
+using Data.Repositorios;
 
 namespace Business.Services
 {
