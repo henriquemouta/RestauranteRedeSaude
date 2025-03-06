@@ -7,17 +7,17 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewsModels.ViewsModels.Fornecedor;
+using ViewsModels.Fornecedor;
 
 namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<List<FornecedorVM>> getFornecedores();
-        Task<FornecedorVM> getFornecedorId(int id);
-        Task<FornecedorIncluirVM> addFornecedor(FornecedorIncluirVM fornecedor);
-        Task<FornecedorUpdateVM> updateFornecedor(int id, FornecedorUpdateVM fornecedor);
-        Task deleteFornecedor(int id);
+        Task<List<FornecedorVM>> get();
+        Task<FornecedorVM> getId(int id);
+        Task<FornecedorIncluirVM> add(FornecedorIncluirVM fornecedor);
+        Task<FornecedorUpdateVM> update(int id, FornecedorUpdateVM fornecedor);
+        Task delete(int id);
 
 
     }
@@ -32,7 +32,7 @@ namespace Business.Services
         }
 
 
-        public async Task<FornecedorIncluirVM> addFornecedor(FornecedorIncluirVM fornecedor)
+        public async Task<FornecedorIncluirVM> add(FornecedorIncluirVM fornecedor)
         {
             if (fornecedor == null) throw new ArgumentNullException(nameof(fornecedor));
     
@@ -52,7 +52,7 @@ namespace Business.Services
             
         }
 
-        public async Task deleteFornecedor(int id)
+        public async Task delete(int id)
         {
             Fornecedor fornecedor = await repositorioFornecedor.get.FirstOrDefaultAsync(obj => obj.id == id);
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
@@ -61,7 +61,7 @@ namespace Business.Services
 
         }
 
-        public async Task<List<FornecedorVM>> getFornecedores()
+        public async Task<List<FornecedorVM>> get()
         {
             IQueryable<Fornecedor> fornecedors = repositorioFornecedor.get;
 
@@ -76,7 +76,7 @@ namespace Business.Services
             return lista;
         }
 
-        public async Task<FornecedorVM> getFornecedorId(int id)
+        public async Task<FornecedorVM> getId(int id)
         {
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
             var item = await repositorioFornecedor.get.FirstOrDefaultAsync(obj => obj.id == id);
@@ -89,7 +89,7 @@ namespace Business.Services
             return fornecedor ?? throw new KeyNotFoundException($"Fornecedor com Id {id} não encontrado.");
         }
 
-        public async Task<FornecedorUpdateVM> updateFornecedor(int id, FornecedorUpdateVM fornecedor)
+        public async Task<FornecedorUpdateVM> update(int id, FornecedorUpdateVM fornecedor)
         {
             if (fornecedor == null) throw new ArgumentNullException(nameof(fornecedor));
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(fornecedor));

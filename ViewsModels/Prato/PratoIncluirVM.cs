@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Prato
+namespace ViewsModels.Prato
 {
-    public class PratoUpdateVM
+    public class PratoIncluirVM
     {
-        
-
-
+        public int id { get; set; }
         public string nome { get; set; }
 
 
@@ -16,6 +14,7 @@ namespace ViewsModels.ViewsModels.Prato
 
 
         public string categoria { get; set; }
-        
+
+
     }
 }

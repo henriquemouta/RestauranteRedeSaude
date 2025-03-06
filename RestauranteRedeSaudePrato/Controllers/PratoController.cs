@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
-using Models.ViewModels;
 using ViewsModels;
-using ViewsModels.Estoques;
-using ViewsModels.ViewsModels.Prato;
+using ViewsModels.Prato;
 
 namespace RestauranteRedeSaudePrato.Controllers
 {

@@ -1,5 +1,4 @@
-﻿using Data.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using Models.ViewModels;
 using System;
@@ -20,5 +19,6 @@ namespace Data.Repositorios
     {
 
         public RepositorioEstoque(AppDbContext dbContext) : base(dbContext) { }
+
     }
 }

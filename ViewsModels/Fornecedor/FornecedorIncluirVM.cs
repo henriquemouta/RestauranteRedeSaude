@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewsModels.ViewsModels.Fornecedor
+namespace ViewsModels.Fornecedor
 {
     public class FornecedorIncluirVM
     {
