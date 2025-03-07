@@ -12,7 +12,7 @@ namespace Business.Services
         Task<FornecedorIncluirVM> add(FornecedorIncluirVM fornecedor);
         Task<FornecedorUpdateVM> update(int id, FornecedorUpdateVM fornecedor);
         Task delete(int id);
-
+        Task delete(FornecedorFiltro filtro);
 
     }
 
@@ -22,7 +22,7 @@ namespace Business.Services
 
         public ServicoFornecedor(IRepositorioFornecedor repositorioFornecedor)
         {
-            repositorioFornecedor = repositorioFornecedor ?? throw new ArgumentNullException(nameof(repositorioFornecedor));
+            this.repositorioFornecedor = repositorioFornecedor ?? throw new ArgumentNullException(nameof(repositorioFornecedor));
         }
 
 
@@ -53,6 +53,34 @@ namespace Business.Services
             repositorioFornecedor.delete(fornecedor);
             await repositorioFornecedor.saveChangesAsync();
 
+        }
+
+        public async Task delete(FornecedorFiltro filtro)
+        {
+            IQueryable<Fornecedor> fornecedores = repositorioFornecedor.get;
+
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                fornecedores = fornecedores.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Cnpj))
+            {
+                fornecedores = fornecedores.Where(e => e.cnpj == filtro.Cnpj);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Telefone))
+            {
+                fornecedores = fornecedores.Where(e => e.telefone.Contains(filtro.Telefone));
+            }
+
+
+
+            foreach(var fornecedor in fornecedores)
+            {
+                repositorioFornecedor.delete(fornecedor);
+            }
+            await repositorioFornecedor.saveChangesAsync();
         }
 
         public async Task<List<FornecedorVM>> get(FornecedorFiltro filtro)
@@ -115,6 +143,8 @@ namespace Business.Services
             return fornecedor;
 
         }
+
+
 
 
 

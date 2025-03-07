@@ -19,6 +19,7 @@ namespace Business.Services
         Task<FuncionarioIncluirVM> add(FuncionarioIncluirVM funcionario);
         Task<FuncionarioUpdateVM> update(int id, FuncionarioUpdateVM funcionario);
         Task delete(int id);
+        Task delete(FuncionarioFiltro filtro);
     }
 
     public class ServicoFuncionario : IServicoFuncionario
@@ -49,6 +50,31 @@ namespace Business.Services
             Funcionario funcionario = await _repositorioFuncionario.get.FirstOrDefaultAsync(obj => obj.id == id);
             if (id <= 0) throw new ArgumentException("Id inválido.", nameof(id));
             _repositorioFuncionario.delete(funcionario);
+            await _repositorioFuncionario.saveChangesAsync();
+        }
+
+        public async Task delete(FuncionarioFiltro filtro)
+        {
+            IQueryable<Funcionario> funcionarios = _repositorioFuncionario.get;
+
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                funcionarios = funcionarios.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Cargo))
+            {
+                funcionarios = funcionarios.Where(e => e.cargo.Contains(filtro.Cargo));
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Telefone))
+            {
+                funcionarios = funcionarios.Where(e => e.telefone.Contains(filtro.Telefone));
+            }
+            foreach (var funcionario in funcionarios)
+            {
+                _repositorioFuncionario.delete(funcionario);
+            }
             await _repositorioFuncionario.saveChangesAsync();
         }
 

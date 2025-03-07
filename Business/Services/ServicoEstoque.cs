@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using ViewsModels.Estoques;
 using Microsoft.EntityFrameworkCore;
 using Data.Repositorios;
+using Microsoft.Identity.Client;
 
 namespace Business.Services
 {
@@ -24,6 +25,7 @@ namespace Business.Services
         Task<EstoquesUpdateVM> update(int id, EstoquesUpdateVM item);
         Task<bool> existe(int id);
         Task delete(int id);
+        Task delete(EstoquesFiltro filtro);
         Task<EstoquesVM> getId(int id);
     }
 
@@ -122,6 +124,40 @@ namespace Business.Services
             return item;
         }
 
+        public async Task delete(EstoquesFiltro filtro)
+        {
+            IQueryable<Estoque> estoques = repositorioEstoque.get;
+
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                estoques = estoques.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (filtro.PrecoMinimo.HasValue)
+            {
+                estoques = estoques.Where(e => e.precoUnitario >= filtro.PrecoMinimo.Value);
+            }
+
+            if (filtro.PrecoMaximo.HasValue)
+            {
+                estoques = estoques.Where(e => e.precoUnitario <= filtro.PrecoMaximo.Value);
+            }
+
+            if (filtro.QuantidadeMinima.HasValue)
+            {
+                estoques = estoques.Where(e => e.quantidade >= filtro.QuantidadeMinima.Value);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Categoria))
+            {
+                estoques = estoques.Where(e => e.categoria == filtro.Categoria);
+            }
+            foreach (var estoque in estoques)
+            {
+                repositorioEstoque.delete(estoque);
+            }
+            await repositorioEstoque.saveChangesAsync();
+            }
         public async Task<EstoquesUpdateVM> update(int id, EstoquesUpdateVM item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
