@@ -14,4 +14,7 @@ builder.AddProject<Projects.RestauranteRedeSaudeFuncionarios>("restauranteredesa
 
 builder.AddProject<Projects.RestauranteRedeSaudePrato>("restauranteredesaudeprato");
 
+
+
+
 builder.Build().Run();

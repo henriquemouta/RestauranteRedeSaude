@@ -1,6 +1,7 @@
 using RestauranteRedeSaude.Web;
 using RestauranteRedeSaude.Web.Components;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
@@ -18,6 +19,8 @@ builder.Services.AddHttpClient<WeatherApiClient>(client =>
         // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
         client.BaseAddress = new("https+http://apiservice");
     });
+
+
 
 var app = builder.Build();
 
@@ -39,5 +42,8 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.MapDefaultEndpoints();
+
+
+
 
 app.Run();
