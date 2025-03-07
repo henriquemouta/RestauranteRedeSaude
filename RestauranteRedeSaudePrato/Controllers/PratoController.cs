@@ -74,6 +74,19 @@ namespace RestauranteRedeSaudePrato.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        [HttpDelete]
+        public async Task<IActionResult> delete(PratoFiltro filtro)
+        {
+            try
+            {
+                await servicoPrato.delete(filtro);
+                return Ok(new ModelodeResposta<PratoVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ModelodeResposta<PratoVM>>> getId(int id)

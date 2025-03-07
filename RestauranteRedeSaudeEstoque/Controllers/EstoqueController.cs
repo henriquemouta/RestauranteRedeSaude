@@ -76,6 +76,20 @@ namespace RestauranteRedeSaudeEstoque.Controllers
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> delete([FromQuery] EstoquesFiltro filtro)
+        {
+            try
+            {
+                await servicoEstoques.delete(filtro);
+                return Ok(new ModelodeResposta<EstoquesVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ModelodeResposta<EstoquesVM>>> getId(int id)
         {

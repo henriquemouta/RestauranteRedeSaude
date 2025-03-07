@@ -91,6 +91,20 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
 
         }
 
+        [HttpDelete]
+        public async Task<ActionResult<ModelodeResposta<FuncionarioVM>>> delete(FuncionarioFiltro filtro)
+        {
+            try
+            {
+                await servicoFuncionario.delete(filtro);
+                return Ok(new ModelodeResposta<FuncionarioVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
 
 
     }

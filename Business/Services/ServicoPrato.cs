@@ -21,6 +21,7 @@ namespace Business.Services
         Task<PratoIncluirVM> add(PratoIncluirVM prato);
         Task<PratoUpdateVM> update(int id, PratoUpdateVM prato);
         Task delete(int id);
+        Task delete(PratoFiltro filtro);
     }
 
     public class ServicoPrato : IServicoPrato
@@ -111,7 +112,35 @@ namespace Business.Services
             return prato;
             
         }
+        public async Task delete(PratoFiltro filtro)
+        {
+            IQueryable<Prato> pratos = repositorioPrato.get;
 
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                pratos = pratos.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (filtro.PrecoMinimo.HasValue)
+            {
+                pratos = pratos.Where(e => e.preco >= filtro.PrecoMinimo.Value);
+            }
+
+            if (filtro.PrecoMaximo.HasValue)
+            {
+                pratos = pratos.Where(e => e.preco <= filtro.PrecoMaximo.Value);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Categoria))
+            {
+                pratos = pratos.Where(e => e.categoria == filtro.Categoria);
+            }
+            foreach (var prato in pratos)
+            {
+                repositorioPrato.delete(prato);
+            }
+            await repositorioPrato.saveChangesAsync();
+        }
         public async Task<PratoUpdateVM> update(int id, PratoUpdateVM prato)
         {
             if (prato == null) throw new ArgumentNullException(nameof(prato));

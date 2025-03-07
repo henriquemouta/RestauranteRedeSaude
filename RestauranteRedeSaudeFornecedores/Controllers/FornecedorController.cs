@@ -1,6 +1,7 @@
 ﻿using Business.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 using ViewsModels;
 using ViewsModels.Fornecedor;
 
@@ -43,6 +44,20 @@ namespace RestauranteRedeSaudeFornecedores.Controller
             }
         }
 
+        //[HttpPut]
+        //public async Task<ActionResult<ModelodeResposta<List<FornecedorVM>>>> update([FromQuery] FornecedorFiltro filtro, [FromBody] List<FornecedorUpdateVM> fornecedoresUpdate)
+        //{
+        //    try
+        //    {
+        //        var fornecedores = await servicoFornecedor.get(filtro);
+        //        return Ok(new ModelodeResposta<FornecedorUpdateVM> { sucesso = true, info = fornecedoresUpdate });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
+
         [HttpPut("{id}")]
         public async Task<ActionResult<ModelodeResposta<FornecedorUpdateVM>>> update(int id, [FromBody] FornecedorUpdateVM fornecedor)
         {
@@ -60,6 +75,19 @@ namespace RestauranteRedeSaudeFornecedores.Controller
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> delete([FromQuery] FornecedorFiltro filtro)
+        {
+            try
+            {
+                await servicoFornecedor.delete(filtro);
+                return Ok(new ModelodeResposta<FornecedorVM> { sucesso = true });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> delete(int id)
