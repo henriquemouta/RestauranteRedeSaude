@@ -13,19 +13,19 @@ namespace RestauranteRedeSaudeEstoque.Controllers
     public class EstoqueController(IServicoEstoque servicoEstoques) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<EstoquesVM>>>> get()
+        public async Task<ActionResult<ModelodeResposta<List<EstoquesVM>>>> get([FromQuery] EstoquesFiltro filtro)
         {
             try
             {
-                var estoque = await servicoEstoques.get();
+                var estoque = await servicoEstoques.get(filtro);
                 return Ok(new ModelodeResposta<List<EstoquesVM>> { sucesso = true, info = estoque });
             }
             catch (Exception ex)
             {
-               throw new Exception(ex.Message);
+                return BadRequest(new ModelodeResposta<List<EstoquesVM>> { sucesso = false, erro = ex.Message });
             }
-          
         }
+
 
         [HttpPost]
         public async Task<ActionResult<ModelodeResposta<EstoquesIncluirVM>>> add([FromBody] EstoquesIncluirVM item)

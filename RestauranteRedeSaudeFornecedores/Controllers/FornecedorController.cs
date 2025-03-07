@@ -11,18 +11,19 @@ namespace RestauranteRedeSaudeFornecedores.Controller
     public class FornecedorController(IServicoFornecedor servicoFornecedor) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<IQueryable<FornecedorVM>>>> get()
+        public async Task<ActionResult<ModelodeResposta<List<FornecedorVM>>>> get([FromQuery] FornecedorFiltro filtro)
         {
             try
             {
-                var fornecedores = await servicoFornecedor.get();
+                var fornecedores = await servicoFornecedor.get(filtro);
                 return Ok(new ModelodeResposta<List<FornecedorVM>> { sucesso = true, info = fornecedores });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new ModelodeResposta<List<FornecedorVM>> { sucesso = false, erro = ex.Message });
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult<ModelodeResposta<FornecedorIncluirVM>>> add([FromBody] FornecedorIncluirVM item)

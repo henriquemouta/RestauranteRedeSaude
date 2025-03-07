@@ -12,19 +12,19 @@ namespace RestauranteRedeSaudeFuncionarios.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<FuncionarioVM>>>> get()
+        public async Task<ActionResult<ModelodeResposta<List<FuncionarioVM>>>> get([FromQuery] FuncionarioFiltro filtro)
         {
             try
             {
-                var estoque = await servicoFuncionario.get();
-                return Ok(new ModelodeResposta<List<FuncionarioVM>> { sucesso = true, info = estoque });
+                var funcionarios = await servicoFuncionario.get(filtro);
+                return Ok(new ModelodeResposta<List<FuncionarioVM>> { sucesso = true, info = funcionarios });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new ModelodeResposta<List<FuncionarioVM>> { sucesso = false, erro = ex.Message });
             }
-
         }
+
 
         [HttpPost]
         public async Task<ActionResult<ModelodeResposta<FuncionarioIncluirVM>>> add([FromBody] FuncionarioIncluirVM item)
