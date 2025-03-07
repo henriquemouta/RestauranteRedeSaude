@@ -14,7 +14,7 @@ namespace Business.Services
 {
     public interface IServicoFuncionario
     {
-        Task<List<FuncionarioVM>> get();
+        Task<List<FuncionarioVM>> get(FuncionarioFiltro filtro);
         Task<FuncionarioVM> getId(int id);
         Task<FuncionarioIncluirVM> add(FuncionarioIncluirVM funcionario);
         Task<FuncionarioUpdateVM> update(int id, FuncionarioUpdateVM funcionario);
@@ -52,19 +52,36 @@ namespace Business.Services
             await _repositorioFuncionario.saveChangesAsync();
         }
 
-        public async Task<List<FuncionarioVM>> get()
+        public async Task<List<FuncionarioVM>> get(FuncionarioFiltro filtro)
         {
             IQueryable<Funcionario> funcionarios = _repositorioFuncionario.get;
+
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                funcionarios = funcionarios.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Cargo))
+            {
+                funcionarios = funcionarios.Where(e => e.cargo.Contains(filtro.Cargo));
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Telefone))
+            {
+                funcionarios = funcionarios.Where(e => e.telefone.Contains(filtro.Telefone));
+            }
+
             var lista = await funcionarios.Select(e => new FuncionarioVM
             {
                 id = e.id,
                 nome = e.nome,
                 cargo = e.cargo,
                 telefone = e.telefone,
-
             }).ToListAsync();
+
             return lista;
         }
+
 
         public async Task<FuncionarioVM> getId(int id)
         {

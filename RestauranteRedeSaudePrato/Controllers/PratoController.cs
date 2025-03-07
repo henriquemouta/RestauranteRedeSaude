@@ -12,19 +12,19 @@ namespace RestauranteRedeSaudePrato.Controllers
     public class PratoController(IServicoPrato servicoPrato) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<ModelodeResposta<List<PratoVM>>>> get()
+        public async Task<ActionResult<ModelodeResposta<List<PratoVM>>>> get([FromQuery] PratoFiltro filtro)
         {
             try
             {
-                var estoque = await servicoPrato.get();
-                return Ok(new ModelodeResposta<List<PratoVM>> { sucesso = true, info = estoque });
+                var pratos = await servicoPrato.get(filtro);
+                return Ok(new ModelodeResposta<List<PratoVM>> { sucesso = true, info = pratos });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(new ModelodeResposta<List<PratoVM>> { sucesso = false, erro = ex.Message });
             }
-
         }
+
         [HttpPost]
         public async Task<ActionResult<ModelodeResposta<PratoIncluirVM>>> add([FromBody] PratoIncluirVM item)
         {

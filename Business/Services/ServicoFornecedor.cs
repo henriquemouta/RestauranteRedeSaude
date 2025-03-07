@@ -7,7 +7,7 @@ namespace Business.Services
 {
     public interface IServicoFornecedor
     {
-        Task<List<FornecedorVM>> get();
+        Task<List<FornecedorVM>> get(FornecedorFiltro filtro);
         Task<FornecedorVM> getId(int id);
         Task<FornecedorIncluirVM> add(FornecedorIncluirVM fornecedor);
         Task<FornecedorUpdateVM> update(int id, FornecedorUpdateVM fornecedor);
@@ -55,18 +55,33 @@ namespace Business.Services
 
         }
 
-        public async Task<List<FornecedorVM>> get()
+        public async Task<List<FornecedorVM>> get(FornecedorFiltro filtro)
         {
-            IQueryable<Fornecedor> fornecedors = repositorioFornecedor.get;
+            IQueryable<Fornecedor> fornecedores = repositorioFornecedor.get;
 
-            var lista = await fornecedors.Select(e => new FornecedorVM
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                fornecedores = fornecedores.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Cnpj))
+            {
+                fornecedores = fornecedores.Where(e => e.cnpj == filtro.Cnpj);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Telefone))
+            {
+                fornecedores = fornecedores.Where(e => e.telefone.Contains(filtro.Telefone));
+            }
+
+            var lista = await fornecedores.Select(e => new FornecedorVM
             {
                 id = e.id,
                 nome = e.nome,
                 cnpj = e.cnpj,
                 telefone = e.telefone,
-
             }).ToListAsync();
+
             return lista;
         }
 

@@ -18,7 +18,7 @@ namespace Business.Services
 {
     public interface IServicoEstoque
     {
-        Task<List<EstoquesVM>> get();
+        Task<List<EstoquesVM>> get(EstoquesFiltro filtro);
 
         Task<EstoquesIncluirVM> add(EstoquesIncluirVM item);
         Task<EstoquesUpdateVM> update(int id, EstoquesUpdateVM item);
@@ -65,9 +65,34 @@ namespace Business.Services
             return await repositorioEstoque.get.AnyAsync(obj => obj.id == id);
         }
 
-        public async Task<List<EstoquesVM>> get()
+        public async Task<List<EstoquesVM>> get(EstoquesFiltro filtro)
         {
             IQueryable<Estoque> estoques = repositorioEstoque.get;
+
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                estoques = estoques.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (filtro.PrecoMinimo.HasValue)
+            {
+                estoques = estoques.Where(e => e.precoUnitario >= filtro.PrecoMinimo.Value);
+            }
+
+            if (filtro.PrecoMaximo.HasValue)
+            {
+                estoques = estoques.Where(e => e.precoUnitario <= filtro.PrecoMaximo.Value);
+            }
+
+            if (filtro.QuantidadeMinima.HasValue)
+            {
+                estoques = estoques.Where(e => e.quantidade >= filtro.QuantidadeMinima.Value);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Categoria))
+            {
+                estoques = estoques.Where(e => e.categoria == filtro.Categoria);
+            }
 
             var lista = await estoques.Select(e => new EstoquesVM
             {
@@ -77,8 +102,10 @@ namespace Business.Services
                 precoUnitario = e.precoUnitario,
                 categoria = e.categoria,
             }).ToListAsync();
+
             return lista;
         }
+
 
 
         public async Task<EstoquesVM> getId(int id)

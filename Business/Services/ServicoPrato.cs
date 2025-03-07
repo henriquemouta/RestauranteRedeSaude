@@ -16,7 +16,7 @@ namespace Business.Services
 {
     public interface IServicoPrato 
     {
-        Task<List<PratoVM>> get();
+        Task<List<PratoVM>> get(PratoFiltro filtro);
         Task<PratoVM> getId(int id);
         Task<PratoIncluirVM> add(PratoIncluirVM prato);
         Task<PratoUpdateVM> update(int id, PratoUpdateVM prato);
@@ -30,19 +30,41 @@ namespace Business.Services
         {
             this.repositorioPrato = repositorioPrato ?? throw new ArgumentNullException(nameof(repositorioPrato));
         }
-        public async Task<List<PratoVM>> get()
+        public async Task<List<PratoVM>> get(PratoFiltro filtro)
         {
             IQueryable<Prato> pratos = repositorioPrato.get;
+
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                pratos = pratos.Where(e => e.nome.Contains(filtro.Nome));
+            }
+
+            if (filtro.PrecoMinimo.HasValue)
+            {
+                pratos = pratos.Where(e => e.preco >= filtro.PrecoMinimo.Value);
+            }
+
+            if (filtro.PrecoMaximo.HasValue)
+            {
+                pratos = pratos.Where(e => e.preco <= filtro.PrecoMaximo.Value);
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Categoria))
+            {
+                pratos = pratos.Where(e => e.categoria == filtro.Categoria);
+            }
+
             var lista = await pratos.Select(e => new PratoVM
             {
                 id = e.id,
                 nome = e.nome,
                 preco = e.preco,
                 categoria = e.categoria,
-
             }).ToListAsync();
+
             return lista;
         }
+
 
         public async Task<PratoVM> getId(int id)
         {
